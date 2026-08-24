@@ -43,3 +43,30 @@ campus-management-system/
 ├── README.md
 └── .gitignore
 ```
+
+
+```
+backend/
+│
+├── pom.xml
+│
+└── src/
+    └── main/
+        ├── java/
+        │   └── com/cms/
+        │       ├── controller/
+        │       ├── service/
+        │       ├── repository/
+        │       ├── model/
+        │       ├── dto/
+        │       ├── util/
+        │       └── filter/
+        │
+        └── webapp/
+            ├── WEB-INF/
+            │   └── web.xml
+            │
+            ├── css/
+            ├── js/
+            └── jsp/
+```
