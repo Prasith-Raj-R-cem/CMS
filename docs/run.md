@@ -16,3 +16,5 @@ Webpage url to search:
 http://localhost:8080
 ```
 
+Email: admin@campus.local
+Password: admin123

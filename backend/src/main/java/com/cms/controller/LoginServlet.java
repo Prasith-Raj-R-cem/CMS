@@ -10,6 +10,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -53,6 +55,9 @@ public class LoginServlet extends HttpServlet {
         response.setContentType("text/html");
 
         if (result.isSuccess()) {
+                // session used to create a new session in the cookies to store the user .so the role of the user can be retrived for dashboard page.
+                HttpSession session = request.getSession();
+                session.setAttribute("user", result.getUser());
 
             response.getWriter().println(
                     "<h1>Login Successful</h1>"
