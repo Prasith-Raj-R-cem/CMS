@@ -23,22 +23,8 @@ public class DashboardServlet extends HttpServlet {
         HttpSession session =
                 request.getSession(false);
 
-        if (session == null) {
-
-            response.sendRedirect("login");
-
-            return;
-        }
-        // user to retrive the user role saved in the cookies.
         User user =
                 (User) session.getAttribute("user");
-
-        if (user == null) {
-
-            response.sendRedirect("login");
-
-            return;
-        }
 
         response.setContentType("text/html");
 
