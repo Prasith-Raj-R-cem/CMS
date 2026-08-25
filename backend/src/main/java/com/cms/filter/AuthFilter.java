@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@WebFilter("/dashboard")
+@WebFilter("/*")
 public class AuthFilter implements Filter {
 
     @Override
@@ -28,12 +28,30 @@ public class AuthFilter implements Filter {
         HttpServletResponse httpResponse =
                 (HttpServletResponse) response;
 
+        String path =
+                httpRequest.getRequestURI()
+                        .substring(
+                                httpRequest.getContextPath().length()
+                        );
+
+        // Public pages -> it neglect the auth.
+        if (path.equals("/login")
+        || path.equals("/login.jsp")
+        || path.equals("/logout")) {
+
+            chain.doFilter(request, response);
+            return;
+        }
+
+        // Check authentication
         HttpSession session =
                 httpRequest.getSession(false);
 
         if (session == null) {
 
-            httpResponse.sendRedirect("login");
+            httpResponse.sendRedirect(
+                    httpRequest.getContextPath() + "/login"
+            );
 
             return;
         }
@@ -43,11 +61,14 @@ public class AuthFilter implements Filter {
 
         if (user == null) {
 
-            httpResponse.sendRedirect("login");
+            httpResponse.sendRedirect(
+                    httpRequest.getContextPath() + "/login"
+            );
 
             return;
         }
 
+        // User is authenticated
         chain.doFilter(request, response);
     }
 }
