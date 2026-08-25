@@ -5,7 +5,7 @@ public class User{
     private int id;
     private String email;
     private String passwordHash;
-    private String role;
+    private Role role;
     private String status;
 
     public User(){}
@@ -14,7 +14,7 @@ public class User{
         int id,
         String email,
         String passwordHash,
-        String role,
+        Role role,
         String status
     ){
         this.id = id;
@@ -45,10 +45,10 @@ public class User{
         this.passwordHash = passwordHash;
     }
 
-    public String getRole(){
+    public Role getRole(){
         return role;
     }
-    public void setRole(String role){
+    public void setRole(Role role){
         this.role = role;
     }
 

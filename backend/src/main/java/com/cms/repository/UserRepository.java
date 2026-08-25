@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import com.cms.model.Role;
 import com.cms.model.User;
 import com.cms.util.DatabaseConnection;
 
@@ -35,7 +36,11 @@ public class UserRepository{
                     user.setPasswordHash(
                             resultSet.getString("password_hash")
                     );
-                    user.setRole(resultSet.getString("role"));
+                    user.setRole(
+                        Role.valueOf(
+                            resultSet.getString("role")
+                        )
+                    );
                     user.setStatus(resultSet.getString("status"));
 
                     return user;
