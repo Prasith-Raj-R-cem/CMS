@@ -63,3 +63,9 @@ public class AdminTestServlet extends HttpServlet {
         );
     }
 }
+
+// ================================================ TESTING =======================================================================
+
+// This code section is for testing purpose only.This code is used to check the autentication credential that stored in the cookies.
+
+//=================================================================================================================================
