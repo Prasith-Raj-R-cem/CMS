@@ -3,6 +3,7 @@ package com.cms.service;
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.cms.model.LoginResult;
+import com.cms.model.Role;
 import com.cms.model.User;
 import com.cms.repository.UserRepository;
 
@@ -62,5 +63,43 @@ public class UserService{
                 "Login successful",
                 user
         );
+    }
+
+    public boolean createUser(
+        String email,
+        String password,
+        Role role
+    ) {
+
+        if (email == null || email.isBlank()) {
+            return false;
+        }
+
+        if (password == null || password.isBlank()) {
+            return false;
+        }
+
+        if (role == null) {
+            return false;
+        }
+
+        if (userRepository.findByEmail(email) != null) {
+            return false;
+        }
+
+        String passwordHash =
+                BCrypt.hashpw(
+                        password,
+                        BCrypt.gensalt()
+                );
+
+        User user = new User();
+
+        user.setEmail(email);
+        user.setPasswordHash(passwordHash);
+        user.setRole(role);
+        user.setStatus("ACTIVE");
+
+        return userRepository.createUser(user);
     }
 }
