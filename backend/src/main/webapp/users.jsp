@@ -48,6 +48,9 @@
 <body>
 
 <h1>User Management</h1>
+<a href="<%= request.getContextPath() %>/admin/users/create">
+    Add User
+</a>
 
 <table>
 
