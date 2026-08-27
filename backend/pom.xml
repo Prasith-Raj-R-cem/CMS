@@ -90,7 +90,7 @@
             <version>3.5.0</version>
 
             <configuration>
-                <mainClass>com.cms.TestUserCreation</mainClass>
+                <mainClass>com.cms.TestUserServiceUsers</mainClass>
             </configuration>
         </plugin>
 

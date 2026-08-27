@@ -3,6 +3,8 @@ package com.cms.repository;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.cms.model.Role;
 import com.cms.model.User;
@@ -95,5 +97,59 @@ public class UserRepository{
 
             return false;
         }
+    }
+
+    public List<User> findAllUsers() {
+
+        List<User> users = new ArrayList<>();
+
+        String sql = """
+                SELECT id, email, password_hash, role, status
+                FROM users
+                ORDER BY id
+                """;
+
+        try (Connection connection =
+                        DatabaseConnection.getConnection();
+
+             PreparedStatement statement =
+                        connection.prepareStatement(sql);
+
+             ResultSet resultSet =
+                        statement.executeQuery()) {
+
+            while (resultSet.next()) {
+
+                User user = new User();
+
+                user.setId(resultSet.getInt("id"));
+
+                user.setEmail(
+                        resultSet.getString("email")
+                );
+
+                user.setPasswordHash(
+                        resultSet.getString("password_hash")
+                );
+
+                user.setRole(
+                        Role.valueOf(
+                                resultSet.getString("role")
+                        )
+                );
+
+                user.setStatus(
+                        resultSet.getString("status")
+                );
+
+                users.add(user);
+            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+        return users;
     }
 }
