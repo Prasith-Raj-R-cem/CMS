@@ -153,7 +153,7 @@ public class UserRepository{
         return users;
     }
 
-    public User findById(int id) {
+    public User findById(long id) {
 
         String sql = """
                 SELECT id, email, password_hash, role, status
@@ -167,7 +167,7 @@ public class UserRepository{
              PreparedStatement statement =
                         connection.prepareStatement(sql)) {
 
-            statement.setInt(1, id);
+            statement.setLong(1, id);
 
             try (ResultSet resultSet =
                          statement.executeQuery()) {
@@ -294,20 +294,20 @@ public class UserRepository{
                     SET password_hash = ?
                     WHERE id = ?
                     """;
-        
+
             try (Connection connection =
                             DatabaseConnection.getConnection();
                  PreparedStatement statement =
                             connection.prepareStatement(sql)) {
-                        
+
                 statement.setString(1, passwordHash);
                 statement.setInt(2, id);
-        
+
                 int rowsAffected =
                         statement.executeUpdate();
-        
+
                 return rowsAffected == 1;
-        
+
             } catch (Exception e) {
                 e.printStackTrace();
                 return false;

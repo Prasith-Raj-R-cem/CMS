@@ -3,6 +3,7 @@ package com.cms.controller;
 import java.io.IOException;
 
 import com.cms.model.LoginResult;
+import com.cms.model.Role;
 import com.cms.service.UserService;
 
 import jakarta.servlet.ServletException;
@@ -59,21 +60,20 @@ public class LoginServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("user", result.getUser());
 
-            response.getWriter().println(
-                    "<h1>Login Successful</h1>"
-            );
+            if (result.getUser().getRole() == Role.ADMIN) {
 
-            response.getWriter().println(
-                    "<p>Welcome, "
-                    + result.getUser().getEmail()
-                    + "</p>"
-            );
+                    response.sendRedirect(
+                            request.getContextPath()
+                                    + "/admin/dashboard"
+                    );
 
-            response.getWriter().println(
-                    "<p>Role: "
-                    + result.getUser().getRole()
-                    + "</p>"
-            );
+                } else {
+                
+                    response.sendRedirect(
+                            request.getContextPath()
+                                    + "/dashboard"
+                    );
+                }
 
         } else {
 

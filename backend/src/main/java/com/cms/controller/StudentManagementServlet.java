@@ -1,18 +1,22 @@
 package com.cms.controller;
 
 import java.io.IOException;
+import java.util.List;
 
-import com.cms.model.User;
+import com.cms.model.Student;
+import com.cms.service.StudentService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
-@WebServlet("/admin/dashboard")
-public class AdminDashboardServlet extends HttpServlet {
+@WebServlet("/admin/students")
+public class StudentManagementServlet extends HttpServlet {
+
+    private final StudentService studentService =
+            new StudentService();
 
     @Override
     protected void doGet(
@@ -20,19 +24,16 @@ public class AdminDashboardServlet extends HttpServlet {
             HttpServletResponse response
     ) throws ServletException, IOException {
 
-        HttpSession session =
-                request.getSession(false);
-
-        User user =
-                (User) session.getAttribute("user");
+        List<Student> students =
+                studentService.getAllStudents();
 
         request.setAttribute(
-                "user",
-                user
+                "students",
+                students
         );
 
         request.getRequestDispatcher(
-                "/admin-dashboard.jsp"
+                "/students.jsp"
         ).forward(request, response);
     }
 }

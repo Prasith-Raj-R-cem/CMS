@@ -90,7 +90,7 @@
             <version>3.5.0</version>
 
             <configuration>
-                <mainClass>com.cms.TestPasswordReset</mainClass>
+                <mainClass>com.cms.TestStudentServiceList</mainClass>
             </configuration>
         </plugin>
 
