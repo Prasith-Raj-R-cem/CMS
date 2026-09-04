@@ -61,6 +61,7 @@
             <th>Email</th>
             <th>Role</th>
             <th>Status</th>
+            <th>Action</th>
         </tr>
 
     </thead>
@@ -92,6 +93,33 @@
 
             <td class="status-active">
                 <%= user.getStatus() %>
+            </td>
+            <td>
+                <a href="<%= request.getContextPath() %>/admin/users/edit?id=<%= user.getId() %>">
+                    Edit
+                </a>
+            
+                <form method="post"
+                      action="<%= request.getContextPath() %>/admin/users/status"
+                      style="display:inline;">
+            
+                    <input type="hidden"
+                           name="id"
+                           value="<%= user.getId() %>">
+            
+                    <input type="hidden"
+                           name="status"
+                           value="<%= "ACTIVE".equals(user.getStatus())
+                                   ? "INACTIVE"
+                                   : "ACTIVE" %>">
+            
+                    <button type="submit">
+                        <%= "ACTIVE".equals(user.getStatus())
+                                ? "Deactivate"
+                                : "Activate" %>
+                    </button>
+                
+                </form>
             </td>
 
         </tr>

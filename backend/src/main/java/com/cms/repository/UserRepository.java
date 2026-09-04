@@ -152,4 +152,165 @@ public class UserRepository{
 
         return users;
     }
+
+    public User findById(int id) {
+
+        String sql = """
+                SELECT id, email, password_hash, role, status
+                FROM users
+                WHERE id = ?
+                """;
+
+        try (Connection connection =
+                        DatabaseConnection.getConnection();
+
+             PreparedStatement statement =
+                        connection.prepareStatement(sql)) {
+
+            statement.setInt(1, id);
+
+            try (ResultSet resultSet =
+                         statement.executeQuery()) {
+
+                if (resultSet.next()) {
+
+                    User user = new User();
+
+                    user.setId(
+                            resultSet.getInt("id")
+                    );
+
+                    user.setEmail(
+                            resultSet.getString("email")
+                    );
+
+                    user.setPasswordHash(
+                            resultSet.getString("password_hash")
+                    );
+
+                    user.setRole(
+                            Role.valueOf(
+                                    resultSet.getString("role")
+                            )
+                    );
+
+                    user.setStatus(
+                            resultSet.getString("status")
+                    );
+
+                    return user;
+                }
+            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public boolean updateUser(User user) {
+
+        String sql = """
+                UPDATE users
+                SET email = ?, role = ?, status = ?
+                WHERE id = ?
+                """;
+
+        try (Connection connection =
+                        DatabaseConnection.getConnection();
+
+             PreparedStatement statement =
+                        connection.prepareStatement(sql)) {
+
+            statement.setString(
+                    1,
+                    user.getEmail()
+            );
+
+            statement.setString(
+                    2,
+                    user.getRole().name()
+            );
+
+            statement.setString(
+                    3,
+                    user.getStatus()
+            );
+
+            statement.setInt(
+                    4,
+                    user.getId()
+            );
+
+            int rowsAffected =
+                    statement.executeUpdate();
+
+            return rowsAffected == 1;
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            return false;
+        }
+    }
+
+    public boolean updateStatus(int id, String status) {
+
+        String sql = """
+                UPDATE users
+                SET status = ?
+                WHERE id = ?
+                """;
+    
+        try (Connection connection =
+                        DatabaseConnection.getConnection();
+    
+             PreparedStatement statement =
+                        connection.prepareStatement(sql)) {
+                        
+            statement.setString(1, status);
+            statement.setInt(2, id);
+    
+            int rowsAffected =
+                    statement.executeUpdate();
+    
+            return rowsAffected == 1;
+    
+        } catch (Exception e) {
+        
+            e.printStackTrace();
+    
+            return false;
+        }
+    }
+
+    public boolean updatePassword(int id, String passwordHash) {
+
+            String sql = """
+                    UPDATE users
+                    SET password_hash = ?
+                    WHERE id = ?
+                    """;
+        
+            try (Connection connection =
+                            DatabaseConnection.getConnection();
+                 PreparedStatement statement =
+                            connection.prepareStatement(sql)) {
+                        
+                statement.setString(1, passwordHash);
+                statement.setInt(2, id);
+        
+                int rowsAffected =
+                        statement.executeUpdate();
+        
+                return rowsAffected == 1;
+        
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
 }

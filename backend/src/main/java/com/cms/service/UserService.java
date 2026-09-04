@@ -2,7 +2,7 @@ package com.cms.service;
 
 import java.util.List;
 
-import org.mindrot.jbcrypt.BCrypt;
+import org.mindrot.jbcrypt.BCrypt;  // jbcrypt lib for hashing password -> 60 char
 
 import com.cms.model.LoginResult;
 import com.cms.model.Role;
@@ -23,6 +23,11 @@ public class UserService{
     public List<User> findAllUsers() {
 
         return userRepository.findAllUsers();
+    }
+
+    public User findUserById(int id) {
+
+        return userRepository.findById(id);
     }
 
     public LoginResult login(
@@ -108,5 +113,83 @@ public class UserService{
         user.setStatus("ACTIVE");
 
         return userRepository.createUser(user);
+    }
+
+    public boolean updateUser(User user) {
+
+        if (user == null) {
+            return false;
+        }
+    
+        if (user.getEmail() == null ||
+            user.getEmail().isBlank()) {
+            
+            return false;
+        }
+    
+        if (user.getRole() == null) {
+            return false;
+        }
+    
+        if (user.getStatus() == null ||
+            user.getStatus().isBlank()) {
+            
+            return false;
+        }
+    
+        User existingUser =
+                userRepository.findById(user.getId());
+    
+        if (existingUser == null) {
+            return false;
+        }
+    
+        return userRepository.updateUser(user);
+    }
+
+    public boolean updateUserStatus(int id, String status) {
+
+        if (status == null || status.isBlank()) {
+            return false;
+        }
+
+        if (!"ACTIVE".equals(status) &&
+            !"INACTIVE".equals(status)) {
+
+            return false;
+        }
+
+        User user =
+                userRepository.findById(id);
+
+        if (user == null) {
+            return false;
+        }
+
+        return userRepository.updateStatus(id, status);
+    }
+
+    public boolean resetPassword(int id, String newPassword) {
+
+        if (newPassword == null || newPassword.isBlank()) {
+            return false;
+        }
+
+        User user = userRepository.findById(id);
+
+        if (user == null) {
+            return false;
+        }
+
+        String passwordHash =
+                BCrypt.hashpw(
+                        newPassword,
+                        BCrypt.gensalt()
+                );
+
+        return userRepository.updatePassword(
+                id,
+                passwordHash
+        );
     }
 }
