@@ -112,6 +112,46 @@ public class UserService{
         user.setRole(role);
         user.setStatus("ACTIVE");
 
+        long userId = userRepository.createUser(user);
+
+        return userId != -1;
+    }
+
+    public long createUserAndGetId(
+            String email,
+            String password,
+            Role role
+    ) {
+    
+        if (email == null || email.isBlank()) {
+            return -1;
+        }
+    
+        if (password == null || password.isBlank()) {
+            return -1;
+        }
+    
+        if (role == null) {
+            return -1;
+        }
+    
+        if (userRepository.findByEmail(email) != null) {
+            return -1;
+        }
+    
+        String passwordHash =
+                BCrypt.hashpw(
+                        password,
+                        BCrypt.gensalt()
+                );
+    
+        User user = new User();
+    
+        user.setEmail(email);
+        user.setPasswordHash(passwordHash);
+        user.setRole(role);
+        user.setStatus("ACTIVE");
+    
         return userRepository.createUser(user);
     }
 

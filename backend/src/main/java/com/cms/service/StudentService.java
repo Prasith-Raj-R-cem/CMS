@@ -15,6 +15,9 @@ public class StudentService {
 
     private final UserRepository userRepository =
             new UserRepository();
+    
+    private final UserService userService =
+            new UserService();
 
     public boolean createStudent(Student student) {
 
@@ -66,5 +69,38 @@ public class StudentService {
     public List<Student> getAllStudents() {
 
         return studentRepository.findAllStudents();
+    }
+
+    public boolean createStudent(
+            String email,
+            String password,
+            Student student
+    ) {
+
+        if (email == null || email.isBlank()) {
+            return false;
+        }
+
+        if (password == null || password.isBlank()) {
+            return false;
+        }
+
+        if (student == null) {
+            return false;
+        }
+
+        long userId = userService.createUserAndGetId(
+                email,
+                password,
+                Role.STUDENT
+        );
+
+        if (userId == -1) {
+            return false;
+        }
+
+        student.setUserId(userId);
+
+        return studentRepository.createStudent(student);
     }
 }
