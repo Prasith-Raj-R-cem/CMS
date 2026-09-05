@@ -1,5 +1,6 @@
 package com.cms.service;
 
+import java.sql.Connection;
 import java.util.List;
 
 import com.cms.model.Role;
@@ -7,6 +8,7 @@ import com.cms.model.Student;
 import com.cms.model.User;
 import com.cms.repository.StudentRepository;
 import com.cms.repository.UserRepository;
+import com.cms.util.DatabaseConnection;
 
 public class StudentService {
 
@@ -71,36 +73,75 @@ public class StudentService {
         return studentRepository.findAllStudents();
     }
 
+    //  the transaction-aware method.
+
     public boolean createStudent(
             String email,
             String password,
             Student student
     ) {
-
+    
         if (email == null || email.isBlank()) {
             return false;
         }
-
+    
         if (password == null || password.isBlank()) {
             return false;
         }
-
+    
         if (student == null) {
             return false;
         }
-
-        long userId = userService.createUserAndGetId(
-                email,
-                password,
-                Role.STUDENT
-        );
-
-        if (userId == -1) {
+    
+        try (Connection connection =
+                     DatabaseConnection.getConnection()) {
+                    
+            connection.setAutoCommit(false);
+    
+            try {
+            
+                long userId =
+                        userService.createUserAndGetId(
+                                connection,
+                                email,
+                                password,
+                                Role.STUDENT
+                        );
+    
+                if (userId == -1) {
+                    connection.rollback();
+                    return false;
+                }
+    
+                student.setUserId(userId);
+    
+                boolean studentCreated =
+                        studentRepository.createStudent(
+                                connection,
+                                student
+                        );
+    
+                if (!studentCreated) {
+                    connection.rollback();
+                    return false;
+                }
+    
+                connection.commit();
+    
+                return true;
+    
+            } catch (Exception e) {
+            
+                connection.rollback();
+    
+                throw e;
+            }
+    
+        } catch (Exception e) {
+        
+            e.printStackTrace();
+    
             return false;
         }
-
-        student.setUserId(userId);
-
-        return studentRepository.createStudent(student);
     }
 }

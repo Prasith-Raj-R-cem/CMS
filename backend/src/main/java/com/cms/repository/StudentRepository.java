@@ -57,6 +57,40 @@ public class StudentRepository {
         }
     }
 
+    public boolean createStudent(Connection connection, Student student) {
+
+            String sql = """
+                    INSERT INTO students
+                    (user_id, register_no, first_name, last_name,
+                     date_of_birth, gender, phone, department,
+                     semester, admission_year)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """;
+        
+            try (PreparedStatement statement =
+                         connection.prepareStatement(sql)) {
+                        
+                statement.setLong(1, student.getUserId());
+                statement.setString(2, student.getRegisterNo());
+                statement.setString(3, student.getFirstName());
+                statement.setString(4, student.getLastName());
+                statement.setString(5, student.getDateOfBirth());
+                statement.setString(6, student.getGender());
+                statement.setString(7, student.getPhone());
+                statement.setString(8, student.getDepartment());
+                statement.setInt(9, student.getSemester());
+                statement.setInt(10, student.getAdmissionYear());
+        
+                int rowsAffected = statement.executeUpdate();
+        
+                return rowsAffected == 1;
+        
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
     public Student findById(long id) {
 
         String sql = """

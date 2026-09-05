@@ -1,8 +1,9 @@
 package com.cms.service;
 
-import java.util.List;
+import java.sql.Connection;
+import java.util.List;  // jbcrypt lib for hashing password -> 60 char
 
-import org.mindrot.jbcrypt.BCrypt;  // jbcrypt lib for hashing password -> 60 char
+import org.mindrot.jbcrypt.BCrypt;
 
 import com.cms.model.LoginResult;
 import com.cms.model.Role;
@@ -122,37 +123,79 @@ public class UserService{
             String password,
             Role role
     ) {
-    
+
         if (email == null || email.isBlank()) {
             return -1;
         }
-    
+
         if (password == null || password.isBlank()) {
             return -1;
         }
-    
+
         if (role == null) {
             return -1;
         }
-    
+
         if (userRepository.findByEmail(email) != null) {
             return -1;
         }
-    
+
         String passwordHash =
                 BCrypt.hashpw(
                         password,
                         BCrypt.gensalt()
                 );
-    
+
         User user = new User();
-    
+
         user.setEmail(email);
         user.setPasswordHash(passwordHash);
         user.setRole(role);
         user.setStatus("ACTIVE");
-    
+
         return userRepository.createUser(user);
+    }
+
+    public long createUserAndGetId(
+            Connection connection,
+            String email,
+            String password,
+            Role role
+    ) {
+
+        if (email == null || email.isBlank()) {
+            return -1;
+        }
+
+        if (password == null || password.isBlank()) {
+            return -1;
+        }
+
+        if (role == null) {
+            return -1;
+        }
+
+        if (userRepository.findByEmail(email) != null) {
+            return -1;
+        }
+
+        String passwordHash =
+                BCrypt.hashpw(
+                        password,
+                        BCrypt.gensalt()
+                );
+
+        User user = new User();
+
+        user.setEmail(email);
+        user.setPasswordHash(passwordHash);
+        user.setRole(role);
+        user.setStatus("ACTIVE");
+
+        return userRepository.createUser(
+                connection,
+                user
+        );
     }
 
     public boolean updateUser(User user) {

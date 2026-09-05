@@ -11,7 +11,6 @@ import com.cms.model.User;
 import com.cms.util.DatabaseConnection;
 
 public class UserRepository{
-    // find the user through email
     public User findByEmail(String email){
         String sql = """
                 SELECT id, email, password_hash, role, status
@@ -61,33 +60,68 @@ public class UserRepository{
                     (email, password_hash, role, status)
                     VALUES (?, ?, ?, ?)
                     """;
-        
+
             try (Connection connection = DatabaseConnection.getConnection();
                  PreparedStatement statement = connection.prepareStatement(
                          sql,
                          java.sql.Statement.RETURN_GENERATED_KEYS)) {
-                        
+
                 statement.setString(1, user.getEmail());
                 statement.setString(2, user.getPasswordHash());
                 statement.setString(3, user.getRole().name());
                 statement.setString(4, user.getStatus());
-        
+
                 int rowsAffected = statement.executeUpdate();
-        
+
                 if (rowsAffected != 1) {
                     return -1;
                 }
-        
+
                 try (ResultSet resultSet = statement.getGeneratedKeys()) {
                     if (resultSet.next()) {
                         return resultSet.getLong(1);
                     }
                 }
-        
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        
+
+            return -1;
+        }
+
+        public long createUser(Connection connection, User user) {
+            String sql = """
+                    INSERT INTO users
+                    (email, password_hash, role, status)
+                    VALUES (?, ?, ?, ?)
+                    """;
+
+            try (PreparedStatement statement = connection.prepareStatement(
+                    sql,
+                    java.sql.Statement.RETURN_GENERATED_KEYS)) {
+
+                statement.setString(1, user.getEmail());
+                statement.setString(2, user.getPasswordHash());
+                statement.setString(3, user.getRole().name());
+                statement.setString(4, user.getStatus());
+
+                int rowsAffected = statement.executeUpdate();
+
+                if (rowsAffected != 1) {
+                    return -1;
+                }
+
+                try (ResultSet resultSet = statement.getGeneratedKeys()) {
+                    if (resultSet.next()) {
+                        return resultSet.getLong(1);
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             return -1;
         }
 
