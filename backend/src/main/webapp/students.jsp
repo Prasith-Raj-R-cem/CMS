@@ -69,14 +69,31 @@
 
                 <td>
                     <a href="<%= request.getContextPath() %>/admin/students/view?id=<%= student.getId() %>">
-        View
+                        View
                     </a>
-                
+
                     |
                 
                     <a href="<%= request.getContextPath() %>/admin/students/edit?id=<%= student.getId() %>">
                         Edit
                     </a>
+                
+                    |
+                
+                    <form method="post"
+                          action="<%= request.getContextPath() %>/admin/students/delete"
+                          style="display:inline;">
+                
+                        <input type="hidden"
+                               name="id"
+                               value="<%= student.getId() %>">
+                
+                        <button type="submit"
+                                onclick="return confirm('Are you sure you want to delete this student?');">
+                            Delete
+                        </button>
+                    
+                    </form>
                 </td>
             </tr>
 

@@ -339,4 +339,26 @@ public class UserRepository{
                 return false;
             }
         }
+
+
+        public boolean deleteUser(Connection connection, long userId) {
+
+            String sql = """
+                    DELETE FROM users
+                    WHERE id = ?
+                    """;
+        
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            
+                statement.setLong(1, userId);
+        
+                int rowsAffected = statement.executeUpdate();
+        
+                return rowsAffected == 1;
+        
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
 }

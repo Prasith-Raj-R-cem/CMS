@@ -281,12 +281,12 @@ public class StudentRepository {
                         admission_year = ?
                     WHERE id = ?
                     """;
-        
+
             try (Connection connection =
                          DatabaseConnection.getConnection();
                  PreparedStatement statement =
                          connection.prepareStatement(sql)) {
-                        
+
                 statement.setString(1, student.getRegisterNo());
                 statement.setString(2, student.getFirstName());
                 statement.setString(3, student.getLastName());
@@ -297,6 +297,28 @@ public class StudentRepository {
                 statement.setInt(8, student.getSemester());
                 statement.setInt(9, student.getAdmissionYear());
                 statement.setLong(10, student.getId());
+
+                int rowsAffected = statement.executeUpdate();
+
+                return rowsAffected == 1;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        
+        public boolean deleteStudent(Connection connection, long studentId) {
+
+            String sql = """
+                    DELETE FROM students
+                    WHERE id = ?
+                    """;
+        
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        
+                statement.setLong(1, studentId);
         
                 int rowsAffected = statement.executeUpdate();
         
