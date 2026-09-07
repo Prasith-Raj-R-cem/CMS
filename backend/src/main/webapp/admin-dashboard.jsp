@@ -41,7 +41,11 @@
             Student Management
         </a>
     </p>
-
+    <p>
+        <a href="<%= request.getContextPath() %>/admin/faculties">
+            Faculty Management
+        </a>
+    </p>
     <p>
         <a href="<%= request.getContextPath() %>/logout">
             Logout
