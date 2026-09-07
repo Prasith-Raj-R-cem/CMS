@@ -284,12 +284,33 @@ public class FacultyRepository {
                     updated_at = CURRENT_TIMESTAMP
                 WHERE id = ?
                 """;
-    
+
         try (PreparedStatement statement =
                      connection.prepareStatement(sql)) {
-                    
+
             statement.setString(1, status);
             statement.setLong(2, facultyId);
+
+            int rowsAffected = statement.executeUpdate();
+
+            return rowsAffected == 1;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteFaculty(Connection connection, long facultyId) {
+
+        String sql = """
+                DELETE FROM faculties
+                WHERE id = ?
+                """;
+    
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        
+            statement.setLong(1, facultyId);
     
             int rowsAffected = statement.executeUpdate();
     
