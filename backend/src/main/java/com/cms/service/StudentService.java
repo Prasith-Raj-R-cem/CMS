@@ -73,6 +73,15 @@ public class StudentService {
         return studentRepository.findAllStudents();
     }
 
+    public Student findStudentById(long id) {
+
+        if (id <= 0) {
+            return null;
+        }
+
+        return studentRepository.findById(id);
+    }
+
     //  the transaction-aware method.
 
     public boolean createStudent(

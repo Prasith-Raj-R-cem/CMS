@@ -68,9 +68,10 @@
                 </td>
 
                 <td>
-                    View
+                    <a href="<%= request.getContextPath() %>/admin/students/view?id=<%= student.getId() %>">
+                        View
+                    </a>
                 </td>
-
             </tr>
 
         <% } %>
