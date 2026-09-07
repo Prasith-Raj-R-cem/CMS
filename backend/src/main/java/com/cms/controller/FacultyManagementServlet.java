@@ -14,9 +14,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet({
-        "/admin/faculties",
-        "/admin/faculties/create",
-        "/admin/faculties/edit"
+    "/admin/faculties",
+    "/admin/faculties/create",
+    "/admin/faculties/edit",
+    "/admin/faculties/status"
 })
 public class FacultyManagementServlet extends HttpServlet {
 
@@ -107,6 +108,58 @@ public class FacultyManagementServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String path = request.getServletPath();
+
+        if ("/admin/faculties/status".equals(path)) {
+
+            String idParameter = request.getParameter("id");
+            String status = request.getParameter("status");
+        
+            if (idParameter == null || idParameter.isBlank()
+                    || status == null || status.isBlank()) {
+                    
+                response.sendError(
+                        HttpServletResponse.SC_BAD_REQUEST,
+                        "Faculty ID and status are required"
+                );
+                return;
+            }
+        
+            long facultyId;
+        
+            try {
+                facultyId = Long.parseLong(idParameter);
+            } catch (NumberFormatException e) {
+            
+                response.sendError(
+                        HttpServletResponse.SC_BAD_REQUEST,
+                        "Invalid faculty ID"
+                );
+                return;
+            }
+        
+            boolean updated =
+                    facultyService.updateFacultyStatus(
+                            facultyId,
+                            status
+                    );
+        
+            if (updated) {
+            
+                response.sendRedirect(
+                        request.getContextPath()
+                                + "/admin/faculties"
+                );
+        
+            } else {
+            
+                response.sendError(
+                        HttpServletResponse.SC_BAD_REQUEST,
+                        "Unable to update faculty status"
+                );
+            }
+        
+            return;
+        }
 
         if ("/admin/faculties/edit".equals(path)) {
 

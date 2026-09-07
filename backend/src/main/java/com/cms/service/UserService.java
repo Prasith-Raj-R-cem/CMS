@@ -252,6 +252,32 @@ public class UserService{
         return userRepository.updateStatus(id, status);
     }
 
+    public boolean updateUserStatus(
+            Connection connection,
+            long id,
+            String status
+    ) {
+    
+        if (status == null || status.isBlank()) {
+            return false;
+        }
+    
+        if (!"ACTIVE".equals(status)
+                && !"INACTIVE".equals(status)) {
+            return false;
+        }
+    
+        if (id <= 0) {
+            return false;
+        }
+    
+        return userRepository.updateStatus(
+                connection,
+                id,
+                status
+        );
+    }
+
     public boolean resetPassword(int id, String newPassword) {
 
         if (newPassword == null || newPassword.isBlank()) {

@@ -73,17 +73,57 @@
         </td>
 
         <td>
-                
             <a href="<%= request.getContextPath() %>/admin/faculties/view?id=<%= faculty.getId() %>">
                 View
             </a>
-        
             &nbsp; | &nbsp;
         
             <a href="<%= request.getContextPath() %>/admin/faculties/edit?id=<%= faculty.getId() %>">
                 Edit
             </a>
+            &nbsp; | &nbsp;
         
+            <% if ("ACTIVE".equals(faculty.getStatus())) { %>
+            
+                <form method="post"
+                      action="<%= request.getContextPath() %>/admin/faculties/status"
+                      style="display:inline;">
+            
+                    <input type="hidden"
+                           name="id"
+                           value="<%= faculty.getId() %>">
+            
+                    <input type="hidden"
+                           name="status"
+                           value="INACTIVE">
+            
+                    <button type="submit">
+                        Deactivate
+                    </button>
+                
+                </form>
+            
+            <% } else { %>
+            
+                <form method="post"
+                      action="<%= request.getContextPath() %>/admin/faculties/status"
+                      style="display:inline;">
+            
+                    <input type="hidden"
+                           name="id"
+                           value="<%= faculty.getId() %>">
+            
+                    <input type="hidden"
+                           name="status"
+                           value="ACTIVE">
+            
+                    <button type="submit">
+                        Activate
+                    </button>
+                
+                </form>
+            
+            <% } %>
         </td>
 
     </tr>

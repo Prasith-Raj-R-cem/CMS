@@ -255,13 +255,41 @@ public class FacultyRepository {
                     updated_at = CURRENT_TIMESTAMP
                 WHERE id = ?
                 """;
-    
+
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            
+
             statement.setString(1, faculty.getEmployeeId());
             statement.setLong(2, faculty.getDepartmentId());
             statement.setLong(3, faculty.getId());
+
+            int rowsAffected = statement.executeUpdate();
+
+            return rowsAffected == 1;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    public boolean updateStatus(Connection connection,
+                            long facultyId,
+                            String status) {
+
+        String sql = """
+                UPDATE faculties
+                SET status = ?,
+                    updated_at = CURRENT_TIMESTAMP
+                WHERE id = ?
+                """;
+    
+        try (PreparedStatement statement =
+                     connection.prepareStatement(sql)) {
+                    
+            statement.setString(1, status);
+            statement.setLong(2, facultyId);
     
             int rowsAffected = statement.executeUpdate();
     

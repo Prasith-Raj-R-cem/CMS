@@ -313,6 +313,38 @@ public class UserRepository{
         }
     }
 
+    public boolean updateStatus(
+            Connection connection,
+            long id,
+            String status
+    ) {
+    
+        String sql = """
+                UPDATE users
+                SET status = ?
+                WHERE id = ?
+                """;
+    
+        try (PreparedStatement statement =
+                     connection.prepareStatement(sql)) {
+                    
+            statement.setString(1, status);
+            statement.setLong(2, id);
+    
+            int rowsAffected =
+                    statement.executeUpdate();
+    
+            return rowsAffected == 1;
+    
+        } catch (Exception e) {
+        
+            e.printStackTrace();
+    
+            return false;
+        }
+    }
+
+
     public boolean updatePassword(int id, String passwordHash) {
 
             String sql = """
@@ -347,15 +379,15 @@ public class UserRepository{
                     DELETE FROM users
                     WHERE id = ?
                     """;
-        
+
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
             
                 statement.setLong(1, userId);
-        
+
                 int rowsAffected = statement.executeUpdate();
-        
+
                 return rowsAffected == 1;
-        
+
             } catch (Exception e) {
                 e.printStackTrace();
                 return false;
