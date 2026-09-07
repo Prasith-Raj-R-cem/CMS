@@ -17,7 +17,8 @@ import jakarta.servlet.http.HttpServletResponse;
     "/admin/faculties",
     "/admin/faculties/create",
     "/admin/faculties/edit",
-    "/admin/faculties/status"
+    "/admin/faculties/status",
+    "/admin/faculties/delete"
 })
 public class FacultyManagementServlet extends HttpServlet {
 
@@ -33,6 +34,7 @@ public class FacultyManagementServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String path = request.getServletPath();
+
 
         if ("/admin/faculties".equals(path)) {
 
@@ -109,17 +111,15 @@ public class FacultyManagementServlet extends HttpServlet {
 
         String path = request.getServletPath();
 
-        if ("/admin/faculties/status".equals(path)) {
+        if ("/admin/faculties/delete".equals(path)) {
 
             String idParameter = request.getParameter("id");
-            String status = request.getParameter("status");
         
-            if (idParameter == null || idParameter.isBlank()
-                    || status == null || status.isBlank()) {
-                    
+            if (idParameter == null || idParameter.isBlank()) {
+            
                 response.sendError(
                         HttpServletResponse.SC_BAD_REQUEST,
-                        "Faculty ID and status are required"
+                        "Faculty ID is required"
                 );
                 return;
             }
@@ -137,13 +137,9 @@ public class FacultyManagementServlet extends HttpServlet {
                 return;
             }
         
-            boolean updated =
-                    facultyService.updateFacultyStatus(
-                            facultyId,
-                            status
-                    );
+            boolean deleted = facultyService.deleteFaculty(facultyId);
         
-            if (updated) {
+            if (deleted) {
             
                 response.sendRedirect(
                         request.getContextPath()
@@ -154,10 +150,62 @@ public class FacultyManagementServlet extends HttpServlet {
             
                 response.sendError(
                         HttpServletResponse.SC_BAD_REQUEST,
-                        "Unable to update faculty status"
+                        "Unable to delete faculty"
                 );
             }
         
+            return;
+        }
+
+        if ("/admin/faculties/status".equals(path)) {
+
+            String idParameter = request.getParameter("id");
+            String status = request.getParameter("status");
+
+            if (idParameter == null || idParameter.isBlank()
+                    || status == null || status.isBlank()) {
+                    
+                response.sendError(
+                        HttpServletResponse.SC_BAD_REQUEST,
+                        "Faculty ID and status are required"
+                );
+                return;
+            }
+
+            long facultyId;
+
+            try {
+                facultyId = Long.parseLong(idParameter);
+            } catch (NumberFormatException e) {
+            
+                response.sendError(
+                        HttpServletResponse.SC_BAD_REQUEST,
+                        "Invalid faculty ID"
+                );
+                return;
+            }
+
+            boolean updated =
+                    facultyService.updateFacultyStatus(
+                            facultyId,
+                            status
+                    );
+
+            if (updated) {
+            
+                response.sendRedirect(
+                        request.getContextPath()
+                                + "/admin/faculties"
+                );
+
+            } else {
+            
+                response.sendError(
+                        HttpServletResponse.SC_BAD_REQUEST,
+                        "Unable to update faculty status"
+                );
+            }
+
             return;
         }
 

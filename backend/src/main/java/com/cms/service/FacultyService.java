@@ -251,4 +251,67 @@ public class FacultyService {
                 status
         );
     }
+
+    public boolean deleteFaculty(long facultyId) {
+        
+        if (facultyId <= 0) {
+            return false;
+        }
+    
+        // First find the faculty so we can get its user ID
+        Faculty faculty = facultyRepository.findById(facultyId);
+    
+        if (faculty == null) {
+            return false;
+        }
+    
+        long userId = faculty.getUserId();
+    
+        try (Connection connection = DatabaseConnection.getConnection()) {
+        
+            connection.setAutoCommit(false);
+    
+            try {
+            
+                // Step 1: Delete faculty record
+                boolean facultyDeleted =
+                        facultyRepository.deleteFaculty(
+                                connection,
+                                facultyId
+                        );
+    
+                if (!facultyDeleted) {
+                    connection.rollback();
+                    return false;
+                }
+    
+                // Step 2: Delete corresponding user account
+                boolean userDeleted =
+                        userRepository.deleteUser(
+                                connection,
+                                userId
+                        );
+    
+                if (!userDeleted) {
+                    connection.rollback();
+                    return false;
+                }
+    
+                // Both deletes succeeded
+                connection.commit();
+    
+                return true;
+    
+            } catch (Exception e) {
+            
+                connection.rollback();
+                throw e;
+            }
+    
+        } catch (Exception e) {
+        
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

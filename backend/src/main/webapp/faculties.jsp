@@ -124,6 +124,23 @@
                 </form>
             
             <% } %>
+
+            &nbsp; | &nbsp;
+
+            <form method="post"
+                  action="<%= request.getContextPath() %>/admin/faculties/delete"
+                  style="display:inline;"
+                  onsubmit="return confirm('Are you sure you want to permanently delete this faculty?');">
+                        
+                <input type="hidden"
+                       name="id"
+                       value="<%= faculty.getId() %>">
+                        
+                <button type="submit">
+                    Delete
+                </button>
+            
+            </form>
         </td>
 
     </tr>
