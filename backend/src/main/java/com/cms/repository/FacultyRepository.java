@@ -245,4 +245,31 @@ public class FacultyRepository {
 
         return null;
     }
+
+    public boolean updateFaculty(Faculty faculty) {
+
+        String sql = """
+                UPDATE faculties
+                SET employee_id = ?,
+                    department_id = ?,
+                    updated_at = CURRENT_TIMESTAMP
+                WHERE id = ?
+                """;
+    
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            
+            statement.setString(1, faculty.getEmployeeId());
+            statement.setLong(2, faculty.getDepartmentId());
+            statement.setLong(3, faculty.getId());
+    
+            int rowsAffected = statement.executeUpdate();
+    
+            return rowsAffected == 1;
+    
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

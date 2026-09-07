@@ -73,9 +73,17 @@
         </td>
 
         <td>
+                
             <a href="<%= request.getContextPath() %>/admin/faculties/view?id=<%= faculty.getId() %>">
                 View
             </a>
+        
+            &nbsp; | &nbsp;
+        
+            <a href="<%= request.getContextPath() %>/admin/faculties/edit?id=<%= faculty.getId() %>">
+                Edit
+            </a>
+        
         </td>
 
     </tr>

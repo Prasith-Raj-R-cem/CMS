@@ -126,4 +126,34 @@ public class FacultyService {
 
         return facultyRepository.findDetailsById(id);
     }
+
+
+    public boolean updateFaculty(Faculty faculty) {
+
+        if (faculty == null) {
+            return false;
+        }
+    
+        if (faculty.getId() <= 0) {
+            return false;
+        }
+    
+        if (faculty.getEmployeeId() == null
+                || faculty.getEmployeeId().isBlank()) {
+            return false;
+        }
+    
+        if (faculty.getDepartmentId() <= 0) {
+            return false;
+        }
+    
+        Faculty existingFaculty =
+                facultyRepository.findById(faculty.getId());
+    
+        if (existingFaculty == null) {
+            return false;
+        }
+    
+        return facultyRepository.updateFaculty(faculty);
+    }
 }
