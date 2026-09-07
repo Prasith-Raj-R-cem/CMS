@@ -264,4 +264,47 @@ public class StudentRepository {
 
         return students;
     }
+
+
+    public boolean updateStudent(Student student) {
+
+            String sql = """
+                    UPDATE students
+                    SET register_no = ?,
+                        first_name = ?,
+                        last_name = ?,
+                        date_of_birth = ?,
+                        gender = ?,
+                        phone = ?,
+                        department = ?,
+                        semester = ?,
+                        admission_year = ?
+                    WHERE id = ?
+                    """;
+        
+            try (Connection connection =
+                         DatabaseConnection.getConnection();
+                 PreparedStatement statement =
+                         connection.prepareStatement(sql)) {
+                        
+                statement.setString(1, student.getRegisterNo());
+                statement.setString(2, student.getFirstName());
+                statement.setString(3, student.getLastName());
+                statement.setString(4, student.getDateOfBirth());
+                statement.setString(5, student.getGender());
+                statement.setString(6, student.getPhone());
+                statement.setString(7, student.getDepartment());
+                statement.setInt(8, student.getSemester());
+                statement.setInt(9, student.getAdmissionYear());
+                statement.setLong(10, student.getId());
+        
+                int rowsAffected = statement.executeUpdate();
+        
+                return rowsAffected == 1;
+        
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
 }

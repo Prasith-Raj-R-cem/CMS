@@ -82,6 +82,52 @@ public class StudentService {
         return studentRepository.findById(id);
     }
 
+
+    public boolean updateStudent(Student student) {
+
+        if (student == null) {
+            return false;
+        }
+    
+        if (student.getId() <= 0) {
+            return false;
+        }
+    
+        if (student.getRegisterNo() == null ||
+            student.getRegisterNo().isBlank()) {
+            return false;
+        }
+    
+        if (student.getFirstName() == null ||
+            student.getFirstName().isBlank()) {
+            return false;
+        }
+    
+        if (student.getDepartment() == null ||
+            student.getDepartment().isBlank()) {
+            return false;
+        }
+    
+        if (student.getSemester() < 1 ||
+            student.getSemester() > 8) {
+            return false;
+        }
+    
+        if (student.getAdmissionYear() < 2000 ||
+            student.getAdmissionYear() > 2100) {
+            return false;
+        }
+    
+        Student existingStudent =
+                studentRepository.findById(student.getId());
+    
+        if (existingStudent == null) {
+            return false;
+        }
+    
+        return studentRepository.updateStudent(student);
+    }
+
     //  the transaction-aware method.
 
     public boolean createStudent(

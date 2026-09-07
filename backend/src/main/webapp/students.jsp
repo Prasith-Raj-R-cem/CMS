@@ -69,7 +69,13 @@
 
                 <td>
                     <a href="<%= request.getContextPath() %>/admin/students/view?id=<%= student.getId() %>">
-                        View
+        View
+                    </a>
+                
+                    |
+                
+                    <a href="<%= request.getContextPath() %>/admin/students/edit?id=<%= student.getId() %>">
+                        Edit
                     </a>
                 </td>
             </tr>
