@@ -12,6 +12,133 @@
 <html>
 <head>
     <title>Edit Student</title>
+     <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 50px 20px;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #f4f6fb 0%, #e9edf5 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #1f2937;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0 0 24px;
+        }
+
+        body > p {
+            width: 100%;
+            max-width: 480px;
+            background-color: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin: 0 0 20px;
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 32px;
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
+            width: 100%;
+            max-width: 480px;
+        }
+
+        h2 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #4f46e5;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin: 0 0 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px 12px;
+            font-size: 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            outline: none;
+            font-family: inherit;
+            background-color: #ffffff;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            background-color: #4f46e5;
+            color: #ffffff;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #4338ca;
+            transform: translateY(-1px);
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        body > a {
+            display: block;
+            width: 100%;
+            max-width: 480px;
+            text-align: center;
+            margin: 16px auto 0;
+            color: #64748b;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        body > a:hover {
+            color: #475569;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 
 <body>

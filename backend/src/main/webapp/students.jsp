@@ -10,6 +10,130 @@
 <html>
 <head>
     <title>Student Management</title>
+     <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 40px 24px;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #f4f6fb 0%, #e9edf5 100%);
+            color: #1f2937;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        body > a {
+    display: block;
+    width: fit-content;
+    margin: 0 60px 0 auto;
+    background-color: #64748b;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 2px 6px rgba(100, 116, 139, 0.35);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+        body > a:hover {
+            background-color: #475569;
+            transform: translateY(-1px);
+        }
+
+        table {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+            border: none !important;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+        }
+
+        th {
+            color: #ffffff;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 14px 10px !important;
+            text-align: left;
+            border: none !important;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #eef0f5;
+            transition: background-color 0.15s ease;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9fafc;
+        }
+
+        tbody tr:hover {
+            background-color: #eef2ff;
+        }
+
+        td {
+            padding: 12px 10px !important;
+            font-size: 14px;
+            color: #334155;
+            border: none !important;
+            vertical-align: middle;
+        }
+
+        td:last-child {
+            white-space: nowrap;
+        }
+
+        td a {
+            color: #4f46e5;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        td a:hover {
+            text-decoration: underline;
+        }
+
+        form {
+            display: inline-block;
+            margin: 0;
+        }
+
+        form button {
+            background-color: #ef4444;
+            color: #ffffff;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        form button:hover {
+            background-color: #dc2626;
+        }
+    </style>
 </head>
 
 <body>
