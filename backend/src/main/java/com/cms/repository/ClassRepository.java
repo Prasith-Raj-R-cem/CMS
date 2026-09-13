@@ -122,6 +122,40 @@ public class ClassRepository {
         return classes;
     }
 
+    // Find all active classes for dropdown
+    public List<Class> findAllActiveClasses() {
+    
+        List<Class> classes = new ArrayList<>();
+    
+        String sql = """
+                SELECT
+                    id,
+                    class_name,
+                    department_id,
+                    semester_id,
+                    academic_year_id,
+                    section,
+                    status
+                FROM classes
+                WHERE status = 'ACTIVE'
+                ORDER BY class_name, section
+                """;
+    
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
+            
+            while (resultSet.next()) {
+                classes.add(mapClass(resultSet));
+            }
+    
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    
+        return classes;
+    }
+
 
     // Update class
     public boolean updateClass(Class classData) {

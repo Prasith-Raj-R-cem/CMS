@@ -314,4 +314,8 @@ public class FacultyService {
             return false;
         }
     }
+
+    public List<Faculty> getAllActiveFaculties() {
+        return facultyRepository.findAllActiveFaculties();
+    }
 }

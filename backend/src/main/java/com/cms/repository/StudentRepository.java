@@ -11,6 +11,9 @@ import com.cms.util.DatabaseConnection;
 
 public class StudentRepository {
 
+    // =========================================================
+    // CREATE STUDENT
+    // =========================================================
     public boolean createStudent(Student student) {
 
         String sql = """
@@ -18,6 +21,7 @@ public class StudentRepository {
                 (
                     user_id,
                     register_no,
+                    class_id,
                     first_name,
                     last_name,
                     date_of_birth,
@@ -27,27 +31,27 @@ public class StudentRepository {
                     semester,
                     admission_year
                 )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
-        try (Connection connection =
-                        DatabaseConnection.getConnection();
-             PreparedStatement statement =
-                        connection.prepareStatement(sql)) {
+        try (
+                Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql)
+        ) {
 
             statement.setLong(1, student.getUserId());
             statement.setString(2, student.getRegisterNo());
-            statement.setString(3, student.getFirstName());
-            statement.setString(4, student.getLastName());
-            statement.setString(5, student.getDateOfBirth());
-            statement.setString(6, student.getGender());
-            statement.setString(7, student.getPhone());
-            statement.setString(8, student.getDepartment());
-            statement.setInt(9, student.getSemester());
-            statement.setInt(10, student.getAdmissionYear());
+            statement.setLong(3, student.getClassId());
+            statement.setString(4, student.getFirstName());
+            statement.setString(5, student.getLastName());
+            statement.setString(6, student.getDateOfBirth());
+            statement.setString(7, student.getGender());
+            statement.setString(8, student.getPhone());
+            statement.setString(9, student.getDepartment());
+            statement.setInt(10, student.getSemester());
+            statement.setInt(11, student.getAdmissionYear());
 
-            int rowsAffected =
-                    statement.executeUpdate();
+            int rowsAffected = statement.executeUpdate();
 
             return rowsAffected == 1;
 
@@ -57,40 +61,61 @@ public class StudentRepository {
         }
     }
 
+
+    // =========================================================
+    // CREATE STUDENT USING EXISTING CONNECTION
+    // Used when part of a transaction
+    // =========================================================
     public boolean createStudent(Connection connection, Student student) {
 
-            String sql = """
-                    INSERT INTO students
-                    (user_id, register_no, first_name, last_name,
-                     date_of_birth, gender, phone, department,
-                     semester, admission_year)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                    """;
-        
-            try (PreparedStatement statement =
-                         connection.prepareStatement(sql)) {
-                        
-                statement.setLong(1, student.getUserId());
-                statement.setString(2, student.getRegisterNo());
-                statement.setString(3, student.getFirstName());
-                statement.setString(4, student.getLastName());
-                statement.setString(5, student.getDateOfBirth());
-                statement.setString(6, student.getGender());
-                statement.setString(7, student.getPhone());
-                statement.setString(8, student.getDepartment());
-                statement.setInt(9, student.getSemester());
-                statement.setInt(10, student.getAdmissionYear());
-        
-                int rowsAffected = statement.executeUpdate();
-        
-                return rowsAffected == 1;
-        
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
+        String sql = """
+                INSERT INTO students
+                (
+                    user_id,
+                    register_no,
+                    class_id,
+                    first_name,
+                    last_name,
+                    date_of_birth,
+                    gender,
+                    phone,
+                    department,
+                    semester,
+                    admission_year
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """;
 
+        try (
+                PreparedStatement statement = connection.prepareStatement(sql)
+        ) {
+
+            statement.setLong(1, student.getUserId());
+            statement.setString(2, student.getRegisterNo());
+            statement.setLong(3, student.getClassId());
+            statement.setString(4, student.getFirstName());
+            statement.setString(5, student.getLastName());
+            statement.setString(6, student.getDateOfBirth());
+            statement.setString(7, student.getGender());
+            statement.setString(8, student.getPhone());
+            statement.setString(9, student.getDepartment());
+            statement.setInt(10, student.getSemester());
+            statement.setInt(11, student.getAdmissionYear());
+
+            int rowsAffected = statement.executeUpdate();
+
+            return rowsAffected == 1;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    // =========================================================
+    // FIND STUDENT BY ID
+    // =========================================================
     public Student findById(long id) {
 
         String sql = """
@@ -98,6 +123,7 @@ public class StudentRepository {
                     id,
                     user_id,
                     register_no,
+                    class_id,
                     first_name,
                     last_name,
                     date_of_birth,
@@ -110,15 +136,14 @@ public class StudentRepository {
                 WHERE id = ?
                 """;
 
-        try (Connection connection =
-                        DatabaseConnection.getConnection();
-             PreparedStatement statement =
-                        connection.prepareStatement(sql)) {
+        try (
+                Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql)
+        ) {
 
             statement.setLong(1, id);
 
-            try (var resultSet =
-                         statement.executeQuery()) {
+            try (ResultSet resultSet = statement.executeQuery()) {
 
                 if (resultSet.next()) {
 
@@ -134,6 +159,10 @@ public class StudentRepository {
 
                     student.setRegisterNo(
                             resultSet.getString("register_no")
+                    );
+
+                    student.setClassId(
+                            resultSet.getLong("class_id")
                     );
 
                     student.setFirstName(
@@ -179,6 +208,10 @@ public class StudentRepository {
         return null;
     }
 
+
+    // =========================================================
+    // FIND ALL STUDENTS
+    // =========================================================
     public List<Student> findAllStudents() {
 
         List<Student> students = new ArrayList<>();
@@ -188,6 +221,7 @@ public class StudentRepository {
                     id,
                     user_id,
                     register_no,
+                    class_id,
                     first_name,
                     last_name,
                     date_of_birth,
@@ -200,12 +234,11 @@ public class StudentRepository {
                 ORDER BY id
                 """;
 
-        try (Connection connection =
-                        DatabaseConnection.getConnection();
-             PreparedStatement statement =
-                        connection.prepareStatement(sql);
-             ResultSet resultSet =
-                        statement.executeQuery()) {
+        try (
+                Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql);
+                ResultSet resultSet = statement.executeQuery()
+        ) {
 
             while (resultSet.next()) {
 
@@ -221,6 +254,10 @@ public class StudentRepository {
 
                 student.setRegisterNo(
                         resultSet.getString("register_no")
+                );
+
+                student.setClassId(
+                        resultSet.getLong("class_id")
                 );
 
                 student.setFirstName(
@@ -266,67 +303,78 @@ public class StudentRepository {
     }
 
 
+    // =========================================================
+    // UPDATE STUDENT
+    // =========================================================
     public boolean updateStudent(Student student) {
 
-            String sql = """
-                    UPDATE students
-                    SET register_no = ?,
-                        first_name = ?,
-                        last_name = ?,
-                        date_of_birth = ?,
-                        gender = ?,
-                        phone = ?,
-                        department = ?,
-                        semester = ?,
-                        admission_year = ?
-                    WHERE id = ?
-                    """;
+        String sql = """
+                UPDATE students
+                SET register_no = ?,
+                    class_id = ?,
+                    first_name = ?,
+                    last_name = ?,
+                    date_of_birth = ?,
+                    gender = ?,
+                    phone = ?,
+                    department = ?,
+                    semester = ?,
+                    admission_year = ?
+                WHERE id = ?
+                """;
 
-            try (Connection connection =
-                         DatabaseConnection.getConnection();
-                 PreparedStatement statement =
-                         connection.prepareStatement(sql)) {
+        try (
+                Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql)
+        ) {
 
-                statement.setString(1, student.getRegisterNo());
-                statement.setString(2, student.getFirstName());
-                statement.setString(3, student.getLastName());
-                statement.setString(4, student.getDateOfBirth());
-                statement.setString(5, student.getGender());
-                statement.setString(6, student.getPhone());
-                statement.setString(7, student.getDepartment());
-                statement.setInt(8, student.getSemester());
-                statement.setInt(9, student.getAdmissionYear());
-                statement.setLong(10, student.getId());
+            statement.setString(1, student.getRegisterNo());
+            statement.setLong(2, student.getClassId());
+            statement.setString(3, student.getFirstName());
+            statement.setString(4, student.getLastName());
+            statement.setString(5, student.getDateOfBirth());
+            statement.setString(6, student.getGender());
+            statement.setString(7, student.getPhone());
+            statement.setString(8, student.getDepartment());
+            statement.setInt(9, student.getSemester());
+            statement.setInt(10, student.getAdmissionYear());
+            statement.setLong(11, student.getId());
 
-                int rowsAffected = statement.executeUpdate();
+            int rowsAffected = statement.executeUpdate();
 
-                return rowsAffected == 1;
+            return rowsAffected == 1;
 
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
+    }
 
-        
-        public boolean deleteStudent(Connection connection, long studentId) {
 
-            String sql = """
-                    DELETE FROM students
-                    WHERE id = ?
-                    """;
-        
-            try (PreparedStatement statement = connection.prepareStatement(sql)) {
-        
-                statement.setLong(1, studentId);
-        
-                int rowsAffected = statement.executeUpdate();
-        
-                return rowsAffected == 1;
-        
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
+    // =========================================================
+    // DELETE STUDENT
+    // =========================================================
+    public boolean deleteStudent(Connection connection, long studentId) {
+
+        String sql = """
+                DELETE FROM students
+                WHERE id = ?
+                """;
+
+        try (
+                PreparedStatement statement =
+                        connection.prepareStatement(sql)
+        ) {
+
+            statement.setLong(1, studentId);
+
+            int rowsAffected = statement.executeUpdate();
+
+            return rowsAffected == 1;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
+    }
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import com.cms.model.Subject;
 import com.cms.repository.SubjectRepository;
 
+
 public class SubjectService {
 
     private final SubjectRepository subjectRepository;
@@ -76,4 +77,5 @@ public class SubjectService {
     public List<Subject> getAllActiveSubjects() {
         return subjectRepository.findAllActiveSubjects();
     }
+
 }

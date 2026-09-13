@@ -1105,10 +1105,6 @@
                     Dashboard
                 </h1>
 
-                <p class="page-subtitle">
-                    Manage your Campus Management System
-                </p>
-
             </div>
 
 
@@ -1148,11 +1144,6 @@
                 <h2 class="welcome-title">
                     Welcome back, Admin
                 </h2>
-
-                <p class="welcome-text">
-                    Manage users, academic data, resources and
-                    timetables from one central dashboard.
-                </p>
 
             </div>
 
@@ -1476,7 +1467,6 @@
                         <path d="M10 13h6"/>
 
                     </svg>
-
                 </div>
 
                 <div class="card-arrow">

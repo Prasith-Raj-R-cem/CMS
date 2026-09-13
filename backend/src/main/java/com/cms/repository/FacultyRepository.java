@@ -167,6 +167,55 @@ public class FacultyRepository {
         return faculties;
     }
 
+    // Find all active faculties for dropdown
+        public List<Faculty> findAllActiveFaculties() {
+        
+            List<Faculty> faculties = new ArrayList<>();
+        
+            String sql = """
+                    SELECT id,
+                           user_id,
+                           employee_id,
+                           department_id,
+                           status,
+                           created_at,
+                           updated_at
+                    FROM faculties
+                    WHERE status = 'ACTIVE'
+                    ORDER BY employee_id
+                    """;
+        
+            try (Connection connection = DatabaseConnection.getConnection();
+                 PreparedStatement statement = connection.prepareStatement(sql);
+                 ResultSet resultSet = statement.executeQuery()) {
+                
+                while (resultSet.next()) {
+                
+                    Faculty faculty = new Faculty();
+        
+                    faculty.setId(resultSet.getLong("id"));
+                    faculty.setUserId(resultSet.getLong("user_id"));
+                    faculty.setEmployeeId(
+                            resultSet.getString("employee_id"));
+                    faculty.setDepartmentId(
+                            resultSet.getLong("department_id"));
+                    faculty.setStatus(
+                            resultSet.getString("status"));
+                    faculty.setCreatedAt(
+                            resultSet.getString("created_at"));
+                    faculty.setUpdatedAt(
+                            resultSet.getString("updated_at"));
+        
+                    faculties.add(faculty);
+                }
+        
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        
+            return faculties;
+        }
+
     public FacultyDetails findDetailsById(long id) {
 
         String sql = """

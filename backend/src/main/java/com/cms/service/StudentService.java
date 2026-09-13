@@ -17,9 +17,14 @@ public class StudentService {
 
     private final UserRepository userRepository =
             new UserRepository();
-    
+
     private final UserService userService =
             new UserService();
+
+
+    // =========================================================
+    // CREATE STUDENT
+    // =========================================================
 
     public boolean createStudent(Student student) {
 
@@ -34,6 +39,11 @@ public class StudentService {
 
         if (student.getFirstName() == null ||
             student.getFirstName().isBlank()) {
+            return false;
+        }
+
+        // Class is now required
+        if (student.getClassId() <= 0) {
             return false;
         }
 
@@ -68,10 +78,20 @@ public class StudentService {
         return studentRepository.createStudent(student);
     }
 
+
+    // =========================================================
+    // GET ALL STUDENTS
+    // =========================================================
+
     public List<Student> getAllStudents() {
 
         return studentRepository.findAllStudents();
     }
+
+
+    // =========================================================
+    // FIND STUDENT
+    // =========================================================
 
     public Student findStudentById(long id) {
 
@@ -82,6 +102,10 @@ public class StudentService {
         return studentRepository.findById(id);
     }
 
+
+    // =========================================================
+    // UPDATE STUDENT
+    // =========================================================
 
     public boolean updateStudent(Student student) {
 
@@ -100,6 +124,11 @@ public class StudentService {
 
         if (student.getFirstName() == null ||
             student.getFirstName().isBlank()) {
+            return false;
+        }
+
+        // Class is now required
+        if (student.getClassId() <= 0) {
             return false;
         }
 
@@ -128,33 +157,70 @@ public class StudentService {
         return studentRepository.updateStudent(student);
     }
 
-    //  the transaction-aware method.
+
+    // =========================================================
+    // CREATE STUDENT WITH USER
+    // TRANSACTION
+    // =========================================================
 
     public boolean createStudent(
             String email,
             String password,
             Student student
     ) {
-    
+
         if (email == null || email.isBlank()) {
             return false;
         }
-    
+
         if (password == null || password.isBlank()) {
             return false;
         }
-    
+
         if (student == null) {
             return false;
         }
-    
-        try (Connection connection =
-                     DatabaseConnection.getConnection()) {
-                    
+
+        // Validate class before creating the user.
+        if (student.getClassId() <= 0) {
+            return false;
+        }
+
+        if (student.getRegisterNo() == null ||
+            student.getRegisterNo().isBlank()) {
+            return false;
+        }
+
+        if (student.getFirstName() == null ||
+            student.getFirstName().isBlank()) {
+            return false;
+        }
+
+        if (student.getDepartment() == null ||
+            student.getDepartment().isBlank()) {
+            return false;
+        }
+
+        if (student.getSemester() < 1 ||
+            student.getSemester() > 8) {
+            return false;
+        }
+
+        if (student.getAdmissionYear() < 2000 ||
+            student.getAdmissionYear() > 2100) {
+            return false;
+        }
+
+        try (
+                Connection connection =
+                        DatabaseConnection.getConnection()
+        ) {
+
             connection.setAutoCommit(false);
-    
+
             try {
-            
+
+                // Step 1: Create user
                 long userId =
                         userService.createUserAndGetId(
                                 connection,
@@ -162,96 +228,117 @@ public class StudentService {
                                 password,
                                 Role.STUDENT
                         );
-    
+
                 if (userId == -1) {
                     connection.rollback();
                     return false;
                 }
-    
+
+                // Step 2: Attach user ID to student
                 student.setUserId(userId);
-    
+
+                // Step 3: Create student
                 boolean studentCreated =
                         studentRepository.createStudent(
                                 connection,
                                 student
                         );
-    
+
                 if (!studentCreated) {
                     connection.rollback();
                     return false;
                 }
-    
+
+                // Step 4: Commit everything
                 connection.commit();
-    
+
                 return true;
-    
+
             } catch (Exception e) {
-            
+
                 connection.rollback();
-    
+
                 throw e;
             }
-    
+
         } catch (Exception e) {
-        
+
             e.printStackTrace();
-    
+
             return false;
         }
     }
+
+
+    // =========================================================
+    // DELETE STUDENT
+    // TRANSACTION
+    // =========================================================
 
     public boolean deleteStudent(long studentId) {
 
         if (studentId <= 0) {
             return false;
         }
-    
-        Student student = studentRepository.findById(studentId);
-    
+
+        Student student =
+                studentRepository.findById(studentId);
+
         if (student == null) {
             return false;
         }
-    
+
         long userId = student.getUserId();
-    
-        try (Connection connection = DatabaseConnection.getConnection()) {
-        
+
+        try (
+                Connection connection =
+                        DatabaseConnection.getConnection()
+        ) {
+
             connection.setAutoCommit(false);
-    
+
             try {
-            
+
                 // Step 1: Delete student
                 boolean studentDeleted =
-                        studentRepository.deleteStudent(connection, studentId);
-    
+                        studentRepository.deleteStudent(
+                                connection,
+                                studentId
+                        );
+
                 if (!studentDeleted) {
                     connection.rollback();
                     return false;
                 }
-    
+
                 // Step 2: Delete corresponding user
                 boolean userDeleted =
-                        userRepository.deleteUser(connection, userId);
-    
+                        userRepository.deleteUser(
+                                connection,
+                                userId
+                        );
+
                 if (!userDeleted) {
                     connection.rollback();
                     return false;
                 }
-    
-                // Step 3: Both succeeded
+
+                // Step 3: Commit
                 connection.commit();
-    
+
                 return true;
-    
+
             } catch (Exception e) {
-            
+
                 connection.rollback();
+
                 throw e;
             }
-    
+
         } catch (Exception e) {
-        
+
             e.printStackTrace();
+
             return false;
         }
     }

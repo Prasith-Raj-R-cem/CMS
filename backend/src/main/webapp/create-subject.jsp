@@ -251,6 +251,54 @@
 
             </div>
 
+            <label for="classId">Class:</label>
+
+<select id="classId" name="classId" required>
+
+    <option value="">Select Class</option>
+
+    <option value="1">
+        CSE S3 - Computer Science - A
+    </option>
+
+    <option value="2">
+        CSE S3 - Civil Engineering - A
+    </option>
+
+</select>
+
+<br><br>
+
+
+<label for="department">Department:</label>
+
+<input
+    type="text"
+    id="department"
+    name="department"
+    value="Computer Science"
+    required>
+
+<br><br>
+
+
+<label for="semester">Semester:</label>
+
+<select id="semester" name="semester" required>
+
+    <option value="">Select</option>
+
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
+
+</select>
+
 
             <!-- Subject Type -->
             <div class="form-group">
