@@ -58,4 +58,54 @@ public class DepartmentRepository {
 
         return departments;
     }
+
+    public long createDepartment(Department department) {
+        
+            String sql = """
+                    INSERT INTO departments
+                    (department_code, department_name, status)
+                    VALUES (?, ?, ?)
+                    """;
+        
+            try (Connection connection =
+                         DatabaseConnection.getConnection();
+                 PreparedStatement statement =
+                         connection.prepareStatement(
+                                 sql,
+                                 java.sql.Statement.RETURN_GENERATED_KEYS)) {
+                                
+                statement.setString(
+                        1,
+                        department.getDepartmentCode());
+        
+                statement.setString(
+                        2,
+                        department.getDepartmentName());
+        
+                statement.setString(
+                        3,
+                        department.getStatus());
+        
+                int rowsAffected =
+                        statement.executeUpdate();
+        
+                if (rowsAffected != 1) {
+                    return -1;
+                }
+        
+                try (ResultSet resultSet =
+                             statement.getGeneratedKeys()) {
+                        
+                    if (resultSet.next()) {
+                        return resultSet.getLong(1);
+                    }
+                }
+        
+            } catch (Exception e) {
+        
+                e.printStackTrace();
+            }
+        
+            return -1;
+        }
 }

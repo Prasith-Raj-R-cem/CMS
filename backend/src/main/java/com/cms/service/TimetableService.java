@@ -3,6 +3,7 @@ package com.cms.service;
 import java.util.List;
 
 import com.cms.model.Timetable;
+import com.cms.model.TimetableDetails;
 import com.cms.repository.TimetableRepository;
 
 public class TimetableService {
@@ -129,5 +130,10 @@ public class TimetableService {
                 || "FRIDAY".equals(dayOfWeek)
                 || "SATURDAY".equals(dayOfWeek)
                 || "SUNDAY".equals(dayOfWeek);
+    }
+
+    public List<TimetableDetails> getAllTimetableDetails() {
+
+        return timetableRepository.findAllTimetableDetails();
     }
 }

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.cms.model.Timetable;
+import com.cms.model.TimetableDetails;
 import com.cms.repository.TimetableLookupRepository;
 import com.cms.service.TimetableService;
 
@@ -36,10 +37,10 @@ public class TimetableManagementServlet extends HttpServlet {
         String path = request.getServletPath();
 
         // View all timetables
-        if ("/admin/timetables".equals(path)) {
+       if ("/admin/timetables".equals(path)) {
 
-            List<Timetable> timetables =
-                    timetableService.getAllTimetables();
+            List<TimetableDetails> timetables =
+                    timetableService.getAllTimetableDetails();
 
             request.setAttribute(
                     "timetables",

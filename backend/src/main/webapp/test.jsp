@@ -1,20 +1,14 @@
-<%@ page import="java.util.List" %>
-<%@ page import="com.cms.model.TimetableDetails" %>
+<!-- <!-- <%@ page import="java.util.List" %>
+<%@ page import="com.cms.model.Timetable" %> -->
 
 <!DOCTYPE html>
-
 <html>
-
 <head>
-
     <meta charset="UTF-8">
-
     <title>Timetable Management</title>
-
-
+    
 
     <style>
-
         * {
             box-sizing: border-box;
         }
@@ -159,7 +153,6 @@
         form button:hover {
             background-color: #dc2626;
         }
-
     </style>
 
 </head>
@@ -179,180 +172,87 @@
 </a>
 
 
-
 <table border="1" cellpadding="8" cellspacing="0">
 
     <thead>
-
         <tr>
-
             <th>ID</th>
-
-            <th>Class</th>
-
-            <th>Subject</th>
-
-            <th>Faculty</th>
-
+            <th>Class ID</th>
+            <th>Subject ID</th>
+            <th>Faculty ID</th>
+            <th>Period ID</th>
+            <th>Room ID</th>
+            <th>Academic Year ID</th>
+            <th>Semester ID</th>
             <th>Day</th>
-
-            <th>Period</th>
-
-            <th>Room</th>
-
-            <th>Academic Year</th>
-
-            <th>Semester</th>
-
             <th>Status</th>
-
             <th>Actions</th>
-
         </tr>
-
     </thead>
-
 
     <tbody>
 
     <%
-
-        List<TimetableDetails> timetables =
-                (List<TimetableDetails>) request.getAttribute("timetables");
+        List<Timetable> timetables =
+                (List<Timetable>) request.getAttribute("timetables");
 
         if (timetables != null && !timetables.isEmpty()) {
 
-            for (TimetableDetails timetable : timetables) {
-
+            for (Timetable timetable : timetables) {
     %>
 
         <tr>
 
-            <!-- ID -->
             <td>
                 <%= timetable.getId() %>
             </td>
 
-
-            <!-- Class -->
             <td>
+                <%= timetable.getClassId() %>
+            </td>
 
-                <strong>
-                    <%= timetable.getClassName() %>
-                </strong>
+            <td>
+                <%= timetable.getSubjectId() %>
+            </td>
 
+            <td>
+                <%= timetable.getFacultyId() %>
+            </td>
+
+            <td>
+                <%= timetable.getPeriodId() %>
+            </td>
+
+            <td>
                 <%
-                    if (timetable.getSection() != null &&
-                        !timetable.getSection().isBlank()) {
+                    if (timetable.getRoomId() == null) {
                 %>
-
-                    - <%= timetable.getSection() %>
-
+                    No Room
+                <%
+                    } else {
+                %>
+                    <%= timetable.getRoomId() %>
                 <%
                     }
                 %>
-
             </td>
 
-
-            <!-- Subject -->
             <td>
-
-                <strong>
-                    <%= timetable.getSubjectCode() %>
-                </strong>
-
-                <br>
-
-                <%= timetable.getSubjectName() %>
-
+                <%= timetable.getAcademicYearId() %>
             </td>
 
-
-            <!-- Faculty -->
             <td>
-                <%= timetable.getEmployeeId() %>
+                <%= timetable.getSemesterId() %>
             </td>
 
-
-            <!-- Day -->
             <td>
                 <%= timetable.getDayOfWeek() %>
             </td>
 
-
-            <!-- Period -->
-            <td>
-
-                <strong>
-                    P<%= timetable.getPeriodNumber() %>
-                </strong>
-
-                <br>
-
-                <%= timetable.getStartTime() %>
-                -
-                <%= timetable.getEndTime() %>
-
-            </td>
-
-
-            <!-- Room -->
-            <td>
-
-                <%
-                    if (timetable.getRoomNumber() == null ||
-                        timetable.getRoomNumber().isBlank()) {
-                %>
-
-                    No Room
-
-                <%
-                    } else {
-                %>
-
-                    <strong>
-                        <%= timetable.getRoomNumber() %>
-                    </strong>
-
-                    <%
-                        if (timetable.getBuilding() != null &&
-                            !timetable.getBuilding().isBlank()) {
-                    %>
-
-                        <br>
-                        <%= timetable.getBuilding() %>
-
-                    <%
-                        }
-                    %>
-
-                <%
-                    }
-                %>
-
-            </td>
-
-
-            <!-- Academic Year -->
-            <td>
-                <%= timetable.getAcademicYear() %>
-            </td>
-
-
-            <!-- Semester -->
-            <td>
-                <%= timetable.getSemesterName() %>
-            </td>
-
-
-            <!-- Status -->
             <td>
                 <%= timetable.getStatus() %>
             </td>
 
-
-            <!-- Actions -->
             <td>
 
                 <a href="<%= request.getContextPath() %>/admin/timetables/edit?id=<%= timetable.getId() %>">
@@ -381,25 +281,19 @@
         </tr>
 
     <%
-
             }
 
         } else {
-
     %>
 
         <tr>
-
             <td colspan="11">
                 No timetable entries found.
             </td>
-
         </tr>
 
     <%
-
         }
-
     %>
 
     </tbody>
@@ -408,6 +302,7 @@
 
 <br>
 
-</body>
 
+
+</body>
 </html>

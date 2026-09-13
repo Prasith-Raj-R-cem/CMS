@@ -32,29 +32,45 @@
         }
 
         body > a {
-    display: block;
-    width: fit-content;
-    margin: 0 60px 0 auto;
-    background-color: #64748b;
-    color: #ffffff;
-    text-decoration: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 14px;
-    box-shadow: 0 2px 6px rgba(100, 116, 139, 0.35);
-    transition: background-color 0.2s ease, transform 0.2s ease;
-}
+            display: inline-block !important;
+            text-decoration: none !important;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #ffffff !important;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
 
-        body > a:hover {
+        body > a:nth-of-type(1) {
+            float: left;
+            margin-left: 40px;
+            background-color: #4f46e5;
+            box-shadow: 0 2px 6px rgba(79, 70, 229, 0.35);
+        }
+
+        body > a:nth-of-type(1):hover {
+            background-color: #4338ca;
+            transform: translateY(-1px);
+        }
+
+        body > a:nth-of-type(2) {
+            float: right;
+            margin-right: 40px;
+            background-color: #64748b;
+            box-shadow: 0 2px 6px rgba(100, 116, 139, 0.35);
+        }
+
+        body > a:nth-of-type(2):hover {
             background-color: #475569;
             transform: translateY(-1px);
         }
 
         table {
+            clear: both;
             width: 100%;
             max-width: 1100px;
-            margin: 0 auto;
+            margin: 50px auto 0;
             border-collapse: collapse;
             background-color: #ffffff;
             border-radius: 12px;
@@ -133,18 +149,21 @@
         form button:hover {
             background-color: #dc2626;
         }
-    </style>
+        </style>
 </head>
 
 <body>
 
     <h1>Student Management</h1>
+    <a href="<%= request.getContextPath() %>/admin/students/create">
+        Add Student
+    </a>
+
 
     <a href="<%= request.getContextPath() %>/admin/dashboard">
         Back to Dashboard
     </a>
 
-    <br><br>
 
     <table border="1" cellpadding="8" cellspacing="0">
 

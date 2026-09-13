@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.cms.model.Timetable;
+import com.cms.model.TimetableDetails;
 import com.cms.util.DatabaseConnection;
+
 
 public class TimetableRepository {
 
@@ -297,5 +299,153 @@ public class TimetableRepository {
         );
 
         return timetable;
+    }
+
+    public List<TimetableDetails> findAllTimetableDetails() {
+
+        List<TimetableDetails> details = new ArrayList<>();
+
+        String sql = """
+                SELECT
+                    t.id,
+
+                    c.class_name,
+                    c.section,
+
+                    s.subject_code,
+                    s.subject_name,
+
+                    f.employee_id,
+
+                    p.period_number,
+                    TIME_FORMAT(p.start_time, '%H:%i') AS start_time,
+                    TIME_FORMAT(p.end_time, '%H:%i') AS end_time,
+
+                    r.room_number,
+                    r.building,
+
+                    ay.year_name AS academic_year,
+
+                    sem.semester_name,
+
+                    t.day_of_week,
+                    t.status
+
+                FROM timetables t
+
+                JOIN classes c
+                    ON t.class_id = c.id
+
+                JOIN subjects s
+                    ON t.subject_id = s.id
+
+                JOIN faculties f
+                    ON t.faculty_id = f.id
+
+                JOIN periods p
+                    ON t.period_id = p.id
+
+                LEFT JOIN rooms r
+                    ON t.room_id = r.id
+
+                JOIN academic_years ay
+                    ON t.academic_year_id = ay.id
+
+                JOIN semesters sem
+                    ON t.semester_id = sem.id
+
+                ORDER BY
+                    CASE t.day_of_week
+                        WHEN 'MONDAY' THEN 1
+                        WHEN 'TUESDAY' THEN 2
+                        WHEN 'WEDNESDAY' THEN 3
+                        WHEN 'THURSDAY' THEN 4
+                        WHEN 'FRIDAY' THEN 5
+                        WHEN 'SATURDAY' THEN 6
+                        WHEN 'SUNDAY' THEN 7
+                    END,
+                    p.period_number
+                """;
+
+        try (Connection connection =
+                     DatabaseConnection.getConnection();
+             PreparedStatement statement =
+                     connection.prepareStatement(sql);
+             ResultSet resultSet =
+                     statement.executeQuery()) {
+
+            while (resultSet.next()) {
+
+                TimetableDetails timetable =
+                        new TimetableDetails();
+
+                timetable.setId(
+                        resultSet.getLong("id")
+                );
+
+                timetable.setClassName(
+                        resultSet.getString("class_name")
+                );
+
+                timetable.setSection(
+                        resultSet.getString("section")
+                );
+
+                timetable.setSubjectCode(
+                        resultSet.getString("subject_code")
+                );
+
+                timetable.setSubjectName(
+                        resultSet.getString("subject_name")
+                );
+
+                timetable.setEmployeeId(
+                        resultSet.getString("employee_id")
+                );
+
+                timetable.setPeriodNumber(
+                        resultSet.getInt("period_number")
+                );
+
+                timetable.setStartTime(
+                        resultSet.getString("start_time")
+                );
+
+                timetable.setEndTime(
+                        resultSet.getString("end_time")
+                );
+
+                timetable.setRoomNumber(
+                        resultSet.getString("room_number")
+                );
+
+                timetable.setBuilding(
+                        resultSet.getString("building")
+                );
+
+                timetable.setAcademicYear(
+                        resultSet.getString("academic_year")
+                );
+
+                timetable.setSemesterName(
+                        resultSet.getString("semester_name")
+                );
+
+                timetable.setDayOfWeek(
+                        resultSet.getString("day_of_week")
+                );
+
+                timetable.setStatus(
+                        resultSet.getString("status")
+                );
+
+                details.add(timetable);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return details;
     }
 }
