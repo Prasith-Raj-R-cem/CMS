@@ -13,16 +13,18 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
     private UserService userService;
 
+
     @Override
     public void init() throws ServletException {
+
         userService = new UserService();
     }
+
 
     @Override
     protected void doGet(
@@ -33,6 +35,7 @@ public class LoginServlet extends HttpServlet {
         request.getRequestDispatcher("/login.jsp")
                 .forward(request, response);
     }
+
 
     @Override
     protected void doPost(
@@ -46,34 +49,83 @@ public class LoginServlet extends HttpServlet {
         String password =
                 request.getParameter("password");
 
+
         System.out.println("=== LOGIN DEBUG ===");
-        System.out.println("Email received: [" + email + "]");
+        System.out.println(
+                "Email received: [" + email + "]"
+        );
         System.out.println("===================");
 
+
         LoginResult result =
-                userService.login(email, password);
+                userService.login(
+                        email,
+                        password
+                );
+
 
         response.setContentType("text/html");
 
+
+        // =====================================================
+        // LOGIN SUCCESS
+        // =====================================================
+
         if (result.isSuccess()) {
-                // session used to create a new session in the cookies to store the user .so the role of the user can be retrived for dashboard page.
-                HttpSession session = request.getSession();
-                session.setAttribute("user", result.getUser());
+
+            // Create/retrieve the HTTP session
+            HttpSession session =
+                    request.getSession();
+
+            // Store logged-in user in session
+            session.setAttribute(
+                    "user",
+                    result.getUser()
+            );
+
+
+            // =================================================
+            // ADMIN
+            // =================================================
 
             if (result.getUser().getRole() == Role.ADMIN) {
 
-                    response.sendRedirect(
-                            request.getContextPath()
-                                    + "/admin/dashboard"
-                    );
+                response.sendRedirect(
+                        request.getContextPath()
+                                + "/admin/dashboard"
+                );
 
-                } else {
-                
-                    response.sendRedirect(
-                            request.getContextPath()
-                                    + "/dashboard"
-                    );
-                }
+
+            // =================================================
+            // FACULTY
+            // =================================================
+
+            } else if (
+                    result.getUser().getRole() == Role.FACULTY
+            ) {
+
+                response.sendRedirect(
+                        request.getContextPath()
+                                + "/faculty/dashboard"
+                );
+
+
+            // =================================================
+            // STUDENT
+            // =================================================
+
+            } else {
+
+                response.sendRedirect(
+                        request.getContextPath()
+                                + "/dashboard"
+                );
+            }
+
+
+        // =====================================================
+        // LOGIN FAILURE
+        // =====================================================
 
         } else {
 
@@ -83,8 +135,8 @@ public class LoginServlet extends HttpServlet {
 
             response.getWriter().println(
                     "<p>"
-                    + result.getMessage()
-                    + "</p>"
+                            + result.getMessage()
+                            + "</p>"
             );
         }
     }
