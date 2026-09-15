@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ page import="com.cms.model.Student" %>
+<%@ page import="java.util.List" %>
 
 
 <%
@@ -485,40 +486,36 @@
             Class:
         </label>
 
-        <select
-            id="classId"
-            name="classId"
-            required
-        >
+        <select id="classId" name="classId" required>
 
-            <option value="">
-                Select Class
-            </option>
+            <option value="">Select Class</option>
 
-
-            <option
-                value="1"
-                <%= student.getClassId() == 1
-                        ? "selected"
-                        : "" %>
-            >
-                CSE S3 - Computer Science - A
-            </option>
-
-
-            <option
-                value="2"
-                <%= student.getClassId() == 2
-                        ? "selected"
-                        : "" %>
-            >
-                CSE S3 - Civil Engineering - A
-            </option>
-
+            <%
+                List<com.cms.model.Class> classes =
+                        (List<com.cms.model.Class>) request.getAttribute("classes");
+                        
+                if (classes != null) {
+                
+                    for (com.cms.model.Class classData : classes) {
+            %>
+                    
+                <option value="<%= classData.getId() %>"
+                    <%= student.getClassId() == classData.getId()
+                            ? "selected"
+                            : "" %>>
+                
+                    <%= classData.getClassName() %> -
+                    Section <%= classData.getSection() %>
+                
+                </option>
+            
+            <%
+                    }
+                }
+            %>
+            
         </select>
 
-
-        <br><br>
 
 
         <!-- ================================================= -->

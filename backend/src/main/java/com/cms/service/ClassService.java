@@ -48,6 +48,12 @@ public class ClassService {
         return classRepository.findAllClasses();
     }
 
+    // Get all active classes for dropdown
+    public List<Class> getAllActiveClasses() {
+    
+        return classRepository.findAllActiveClasses();
+    }
+
 
     // Update class
     public boolean updateClass(Class classData) {

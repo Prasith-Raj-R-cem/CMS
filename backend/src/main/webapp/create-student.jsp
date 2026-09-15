@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.cms.model.Class" %>
 
 <!DOCTYPE html>
 
@@ -396,24 +398,28 @@
             Class:
         </label>
 
-        <select
-            id="classId"
-            name="classId"
-            required
-        >
-
-            <option value="">
-                Select Class
-            </option>
-
-            <option value="1">
-                CSE S3 - Computer Science - A
-            </option>
-
-            <option value="2">
-                CSE S3 - Civil Engineering - A
-            </option>
-
+        <select id="classId" name="classId" required>
+                
+            <option value="">Select Class</option>
+                
+            <%
+                List<com.cms.model.Class> classes =
+                        (List<com.cms.model.Class>) request.getAttribute("classes");
+                        
+                if (classes != null) {
+                
+                    for (com.cms.model.Class classData : classes) {
+            %>
+                    
+                <option value="<%= classData.getId() %>">
+                    <%= classData.getClassName() %> - Section <%= classData.getSection() %>
+                </option>
+            
+            <%
+                    }
+                }
+            %>
+            
         </select>
 
 

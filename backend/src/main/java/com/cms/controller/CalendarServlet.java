@@ -1,9 +1,7 @@
 package com.cms.controller;
 
 import java.io.IOException;
-import java.util.List;
 
-import com.cms.model.AssignmentSummary;
 import com.cms.model.Student;
 import com.cms.model.User;
 import com.cms.service.AssignmentService;
@@ -16,8 +14,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@WebServlet("/dashboard")
-public class DashboardServlet extends HttpServlet {
+@WebServlet("/calendar")
+public class CalendarServlet extends HttpServlet {
 
     private final StudentService studentService =
             new StudentService();
@@ -70,7 +68,7 @@ public class DashboardServlet extends HttpServlet {
 
 
         // =====================================================
-        // FIND STUDENT PROFILE
+        // GET STUDENT
         // =====================================================
 
         Student student =
@@ -91,17 +89,20 @@ public class DashboardServlet extends HttpServlet {
 
 
         // =====================================================
-        // FIND ASSIGNMENTS FOR STUDENT'S CLASS
+        // GET ASSIGNMENTS FOR STUDENT'S CLASS
         // =====================================================
 
-        List<AssignmentSummary> assignments =
-        assignmentService.getUpcomingAssignmentSummaries(
-                student.getClassId()
+        request.setAttribute(
+                "assignments",
+                assignmentService
+                        .getUpcomingAssignmentSummaries(
+                                student.getClassId()
+                        )
         );
 
 
         // =====================================================
-        // SEND DATA TO JSP
+        // SEND STUDENT TO JSP
         // =====================================================
 
         request.setAttribute(
@@ -110,21 +111,13 @@ public class DashboardServlet extends HttpServlet {
         );
 
 
-        request.setAttribute(
-                "assignments",
-                assignments
-        );
-
-
-        // =====================================================
-        // FORWARD TO DASHBOARD
-        // =====================================================
-
         request.getRequestDispatcher(
-                "/student-dashboard.jsp"
+                "/calendar.jsp"
         ).forward(
                 request,
                 response
         );
+
     }
+
 }

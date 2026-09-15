@@ -10,6 +10,8 @@ import java.util.List;
 
 import com.cms.model.Assignment;
 import com.cms.util.DatabaseConnection;
+import com.cms.model.AssignmentSummary;
+
 
 public class AssignmentRepository {
 
@@ -186,6 +188,124 @@ public class AssignmentRepository {
         return assignments;
     }
 
+        // =====================================================
+        // FIND UPCOMING ASSIGNMENT SUMMARIES BY CLASS
+        // =====================================================
+
+        public List<AssignmentSummary> findUpcomingAssignmentSummariesByClass(
+                long classId) {
+
+            List<AssignmentSummary> assignments =
+                    new ArrayList<>();
+
+
+            String sql = """
+                    SELECT
+                        a.id,
+                        a.title,
+
+                        s.subject_code,
+                        s.subject_name,
+
+                        c.class_name,
+                        c.section,
+
+                        a.deadline
+
+                    FROM assignments a
+
+                    INNER JOIN subjects s
+                        ON a.subject_id = s.id
+
+                    INNER JOIN classes c
+                        ON a.class_id = c.id
+
+                    WHERE a.class_id = ?
+                      AND a.status = 'ACTIVE'
+                      AND a.deadline >= NOW()
+
+                    ORDER BY a.deadline ASC
+
+                    LIMIT 5
+                    """;
+
+
+            try (
+                    Connection connection =
+                            DatabaseConnection.getConnection();
+
+                    PreparedStatement statement =
+                            connection.prepareStatement(sql)
+            ) {
+
+                statement.setLong(1, classId);
+
+
+                try (ResultSet resultSet =
+                             statement.executeQuery()) {
+
+                    while (resultSet.next()) {
+
+                        AssignmentSummary summary =
+                                new AssignmentSummary();
+
+
+                        summary.setId(
+                                resultSet.getLong("id")
+                        );
+
+
+                        summary.setTitle(
+                                resultSet.getString("title")
+                        );
+
+
+                        summary.setSubjectCode(
+                                resultSet.getString("subject_code")
+                        );
+
+
+                        summary.setSubjectName(
+                                resultSet.getString("subject_name")
+                        );
+
+
+                        summary.setClassName(
+                                resultSet.getString("class_name")
+                        );
+
+
+                        summary.setSection(
+                                resultSet.getString("section")
+                        );
+
+
+                        Timestamp deadline =
+                                resultSet.getTimestamp("deadline");
+
+
+                        if (deadline != null) {
+
+                            summary.setDeadline(
+                                    deadline
+                                            .toLocalDateTime()
+                                            .toString()
+                            );
+                        }
+
+
+                        assignments.add(summary);
+                    }
+                }
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+            }
+
+
+            return assignments;
+        }
 
     // =====================================================
     // MAP RESULT SET → ASSIGNMENT

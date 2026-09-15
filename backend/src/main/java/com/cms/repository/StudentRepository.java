@@ -208,6 +208,107 @@ public class StudentRepository {
         return null;
     }
 
+    // =========================================================
+    // FIND STUDENT BY USER ID
+   // Used to identify the logged-in student's profile
+  // =========================================================
+
+        public Student findByUserId(long userId) {
+
+                String sql = """
+                        SELECT
+                        id,
+                        user_id,
+                        register_no,
+                        class_id,
+                        first_name,
+                        last_name,
+                        date_of_birth,
+                        gender,
+                        phone,
+                        department,
+                        semester,
+                        admission_year
+                        FROM students
+                        WHERE user_id = ?
+                        """;
+
+                try (
+                        Connection connection =
+                                DatabaseConnection.getConnection();
+
+                        PreparedStatement statement =
+                                connection.prepareStatement(sql)
+                ) {
+
+                statement.setLong(1, userId);
+
+                try (ResultSet resultSet = statement.executeQuery()) {
+                
+                        if (resultSet.next()) {
+                        
+                        Student student = new Student();
+
+                        student.setId(
+                                resultSet.getLong("id")
+                        );
+
+                        student.setUserId(
+                                resultSet.getLong("user_id")
+                        );
+
+                        student.setRegisterNo(
+                                resultSet.getString("register_no")
+                        );
+
+                        student.setClassId(
+                                resultSet.getLong("class_id")
+                        );
+
+                        student.setFirstName(
+                                resultSet.getString("first_name")
+                        );
+
+                        student.setLastName(
+                                resultSet.getString("last_name")
+                        );
+
+                        student.setDateOfBirth(
+                                resultSet.getString("date_of_birth")
+                        );
+
+                        student.setGender(
+                                resultSet.getString("gender")
+                        );
+
+                        student.setPhone(
+                                resultSet.getString("phone")
+                        );
+
+                        student.setDepartment(
+                                resultSet.getString("department")
+                        );
+
+                        student.setSemester(
+                                resultSet.getInt("semester")
+                        );
+
+                        student.setAdmissionYear(
+                                resultSet.getInt("admission_year")
+                        );
+
+                        return student;
+                        }
+                }
+
+                } catch (Exception e) {
+
+                e.printStackTrace();
+                }
+
+                return null;
+        }
+
 
     // =========================================================
     // FIND ALL STUDENTS

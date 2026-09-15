@@ -1,8 +1,11 @@
 package com.cms.controller;
 
 import java.io.IOException;
+import java.util.List;
 
+import com.cms.model.Class;
 import com.cms.model.Student;
+import com.cms.service.ClassService;
 import com.cms.service.StudentService;
 
 import jakarta.servlet.ServletException;
@@ -16,6 +19,9 @@ public class EditStudentServlet extends HttpServlet {
 
     private final StudentService studentService =
             new StudentService();
+
+    private final ClassService classService =
+            new ClassService();
 
 
     @Override
@@ -72,9 +78,19 @@ public class EditStudentServlet extends HttpServlet {
         }
 
 
+        // Load all active classes for the dropdown
+        List<Class> classes =
+                classService.getAllActiveClasses();
+
+
         request.setAttribute(
                 "student",
                 student
+        );
+
+        request.setAttribute(
+                "classes",
+                classes
         );
 
 
@@ -211,6 +227,11 @@ public class EditStudentServlet extends HttpServlet {
 
         } else {
 
+            /*
+             * If update fails, reload both the student
+             * and active classes before returning to JSP.
+             */
+
             request.setAttribute(
                     "errorMessage",
                     "Unable to update student. Register number or class may be invalid."
@@ -223,9 +244,18 @@ public class EditStudentServlet extends HttpServlet {
                     );
 
 
+            List<Class> classes =
+                    classService.getAllActiveClasses();
+
+
             request.setAttribute(
                     "student",
                     existingStudent
+            );
+
+            request.setAttribute(
+                    "classes",
+                    classes
             );
 
 

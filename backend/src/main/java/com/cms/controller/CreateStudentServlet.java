@@ -1,8 +1,11 @@
 package com.cms.controller;
 
 import java.io.IOException;
+import java.util.List;
 
+import com.cms.model.Class;
 import com.cms.model.Student;
+import com.cms.service.ClassService;
 import com.cms.service.StudentService;
 
 import jakarta.servlet.ServletException;
@@ -17,17 +20,20 @@ public class CreateStudentServlet extends HttpServlet {
     private final StudentService studentService =
             new StudentService();
 
+        private final ClassService classService = new ClassService();
+
 
     @Override
-    protected void doGet(
-            HttpServletRequest request,
-            HttpServletResponse response)
-            throws ServletException, IOException {
-
-        request.getRequestDispatcher(
-                "/create-student.jsp"
-        ).forward(request, response);
-    }
+        protected void doGet(HttpServletRequest request, HttpServletResponse response)
+                throws ServletException, IOException {
+                
+            List<Class> classes = classService.getAllActiveClasses();
+        
+            request.setAttribute("classes", classes);
+        
+            request.getRequestDispatcher("/create-student.jsp")
+                   .forward(request, response);
+        }
 
 
     @Override

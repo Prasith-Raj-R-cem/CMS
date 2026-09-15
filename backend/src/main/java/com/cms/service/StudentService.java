@@ -102,6 +102,20 @@ public class StudentService {
         return studentRepository.findById(id);
     }
 
+    // =========================================================
+    // FIND STUDENT BY USER ID
+    // Used by Student Dashboard
+    // =========================================================
+
+    public Student findStudentByUserId(long userId) {
+        
+        if (userId <= 0) {
+            return null;
+        }
+    
+        return studentRepository.findByUserId(userId);
+    }
+
 
     // =========================================================
     // UPDATE STUDENT

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.cms.model.Assignment;
+import com.cms.model.AssignmentSummary;
 import com.cms.repository.AssignmentRepository;
 
 public class AssignmentService {
@@ -142,5 +143,23 @@ public class AssignmentService {
         return assignmentRepository.findAssignmentsByClass(
                 classId
         );
+    }
+
+    // =====================================================
+    // GET UPCOMING ASSIGNMENT SUMMARIES FOR CLASS
+    // =====================================================
+
+    public List<AssignmentSummary> getUpcomingAssignmentSummaries(
+            long classId) {
+
+        if (classId <= 0) {
+            return List.of();
+        }
+
+
+        return assignmentRepository
+                .findUpcomingAssignmentSummariesByClass(
+                        classId
+                );
     }
 }
