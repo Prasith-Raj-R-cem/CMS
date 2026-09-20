@@ -12,13 +12,13 @@ public class TestCreateAdmin {
         String email = "admin@campus.local";
         String password = "admin123";
 
-        // Generate BCrypt hash
+        // Generate BCrypt password hash
         String passwordHash = BCrypt.hashpw(
                 password,
                 BCrypt.gensalt(10)
         );
 
-        // Create User object
+        // Create admin user
         User admin = new User();
 
         admin.setEmail(email);
@@ -26,16 +26,17 @@ public class TestCreateAdmin {
         admin.setRole(Role.ADMIN);
         admin.setStatus("ACTIVE");
 
-        // Save admin to database
+        // Save user
         UserRepository userRepository = new UserRepository();
 
-        try {
+        long userId = userRepository.createUser(admin);
 
-            userRepository.saveUser(admin);
+        if (userId > 0) {
 
             System.out.println("=================================");
             System.out.println("ADMIN CREATED SUCCESSFULLY");
             System.out.println("=================================");
+            System.out.println("ID       : " + userId);
             System.out.println("Email    : " + email);
             System.out.println("Password : " + password);
             System.out.println("Role     : ADMIN");
@@ -45,13 +46,11 @@ public class TestCreateAdmin {
             System.out.println(passwordHash);
             System.out.println("=================================");
 
-        } catch (Exception e) {
+        } else {
 
             System.out.println("=================================");
             System.out.println("FAILED TO CREATE ADMIN");
             System.out.println("=================================");
-
-            e.printStackTrace();
         }
     }
 }
