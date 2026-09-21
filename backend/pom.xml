@@ -90,7 +90,7 @@
             <version>3.5.0</version>
 
             <configuration>
-                <mainClass>com.cms.TestStudentServiceList</mainClass>
+                <mainClass>com.cms.testfiles.TestCreateAdmin</mainClass>
             </configuration>
         </plugin>
 

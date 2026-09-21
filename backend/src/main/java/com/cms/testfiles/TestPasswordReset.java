@@ -1,21 +1,23 @@
-package com.cms;
+package com.cms.testfiles;
 
-import org.mindrot.jbcrypt.BCrypt;
+import com.cms.service.UserService;
 
-public class TestPasswordHash {
+public class TestPasswordReset {
 
     public static void main(String[] args) {
 
-        String password = "admin123";
+        UserService userService = new UserService();
 
-        String storedHash =
-                "$2a$12$kaMFwbrsndshfc0wJlUXF.eXRUREbvSPDIDNQz8yYwJrh0ZG9ELDG";
+        int userId = 2;
 
         boolean result =
-                BCrypt.checkpw(password, storedHash);
+                userService.resetPassword(
+                        userId,
+                        "NewPassword123"
+                );
 
         System.out.println(
-                "BCrypt verification: " + result
+                "Password reset result: " + result
         );
     }
 }
