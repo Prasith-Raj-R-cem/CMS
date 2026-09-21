@@ -6,7 +6,7 @@ import com.cms.model.Role;
 import com.cms.model.User;
 import com.cms.repository.UserRepository;
 
-public class TestCreateAdmin {
+public class TestCreateHashAdmin {
 
     public static void main(String[] args) {
 
@@ -55,3 +55,7 @@ public class TestCreateAdmin {
         }
     }
 }
+
+// ===============================================================================================================================
+//  code to ceate admin setup.you can change the password as you like.Remember the password.
+// ================================================================================================================================
