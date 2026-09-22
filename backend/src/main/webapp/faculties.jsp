@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
+
 <%@ page import="java.util.List" %>
 <%@ page import="com.cms.model.Faculty" %>
 
@@ -8,9 +10,15 @@
 
 <!DOCTYPE html>
 <html>
+
 <head>
+
+    <meta charset="UTF-8">
+
     <title>Faculty Management</title>
-       <style>
+
+    <style>
+
         * {
             box-sizing: border-box;
         }
@@ -18,318 +26,784 @@
         body {
             margin: 0;
             padding: 40px 24px;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(135deg, #f4f6fb 0%, #e9edf5 100%);
+
+            font-family:
+                'Segoe UI',
+                Roboto,
+                Helvetica,
+                Arial,
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f4f6fb 0%,
+                    #e9edf5 100%
+                );
+
             color: #1f2937;
         }
 
+
+        /* =========================
+           PAGE TITLE
+           ========================= */
+
         h1 {
             text-align: center;
+
             font-size: 28px;
+
             font-weight: 700;
+
             color: #1e293b;
-            margin-bottom: 20px;
+
+            margin: 0 0 35px 0;
         }
 
-        body > a {
-            display: inline-block !important;
-            text-decoration: none !important;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 14px;
-            color: #ffffff !important;
-            transition: background-color 0.2s ease, transform 0.2s ease;
+
+        /* =========================
+           TOP ACTIONS
+           ========================= */
+
+        .top-actions {
+
+            width: 100%;
+
+            max-width: 1200px;
+
+            margin: 0 auto 26px auto;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
         }
 
-        body > a:nth-of-type(1) {
-            float: left;
-            margin-left: 40px;
+
+        /* =========================
+           ADD FACULTY BUTTON
+           ========================= */
+
+        .add-faculty-btn {
+
+            display: inline-block;
+
             background-color: #4f46e5;
-            box-shadow: 0 2px 6px rgba(79, 70, 229, 0.35);
+
+            color: #ffffff;
+
+            text-decoration: none;
+
+            padding: 10px 20px;
+
+            border-radius: 8px;
+
+            font-weight: 600;
+
+            font-size: 14px;
+
+            box-shadow:
+                0 2px 6px
+                rgba(79, 70, 229, 0.35);
+
+            transition:
+                background-color 0.2s ease,
+                transform 0.2s ease;
         }
 
-        body > a:nth-of-type(1):hover {
+
+        .add-faculty-btn:hover {
+
             background-color: #4338ca;
+
             transform: translateY(-1px);
         }
 
-        body > a:nth-of-type(2) {
-            float: right;
-            margin-right: 40px;
+
+        /* =========================
+           BACK BUTTON
+           ========================= */
+
+        .back-btn {
+
+            display: inline-block;
+
             background-color: #64748b;
-            box-shadow: 0 2px 6px rgba(100, 116, 139, 0.35);
+
+            color: #ffffff;
+
+            text-decoration: none;
+
+            padding: 10px 20px;
+
+            border-radius: 8px;
+
+            font-weight: 600;
+
+            font-size: 14px;
+
+            box-shadow:
+                0 2px 6px
+                rgba(100, 116, 139, 0.30);
+
+            transition:
+                background-color 0.2s ease,
+                transform 0.2s ease;
         }
 
-        body > a:nth-of-type(2):hover {
+
+        .back-btn:hover {
+
             background-color: #475569;
+
             transform: translateY(-1px);
         }
+
+
+        /* =========================
+           TABLE
+           ========================= */
 
         table {
-            clear: both;
+
             width: 100%;
+
             max-width: 1200px;
-            margin: 50px auto 0;
+
+            margin: 0 auto;
+
             border-collapse: collapse;
+
             background-color: #ffffff;
+
             border-radius: 12px;
+
             overflow: hidden;
-            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
-            border: none !important;
+
+            box-shadow:
+                0 4px 16px
+                rgba(15, 23, 42, 0.08);
         }
 
-        table tr:first-child {
-            background: linear-gradient(135deg, #4f46e5, #6366f1);
+
+        /* =========================
+           TABLE HEADER
+           ========================= */
+
+        thead {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4f46e5,
+                    #6366f1
+                );
         }
 
-        table tr:first-child th {
+
+        th {
+
             color: #ffffff;
+
             font-size: 13px;
+
             text-transform: uppercase;
+
             letter-spacing: 0.05em;
-            padding: 14px 10px !important;
+
+            padding: 14px 12px;
+
             text-align: left;
-            border: none !important;
-        }
 
-        table tr:not(:first-child) {
-            border-bottom: 1px solid #eef0f5;
-            transition: background-color 0.15s ease;
-        }
-
-        table tr:not(:first-child):nth-child(even) {
-            background-color: #f9fafc;
-        }
-
-        table tr:not(:first-child):hover {
-            background-color: #eef2ff;
-        }
-
-        td {
-            padding: 12px 10px !important;
-            font-size: 14px;
-            color: #334155;
-            border: none !important;
-            vertical-align: middle;
-        }
-
-        td:last-child {
             white-space: nowrap;
         }
 
-        td[colspan] {
-            text-align: center;
-            padding: 24px !important;
-            font-style: italic;
-            color: #94a3b8;
+
+        /* =========================
+           TABLE BODY
+           ========================= */
+
+        tbody tr {
+
+            border-bottom: 1px solid #eef0f5;
+
+            transition:
+                background-color 0.15s ease;
         }
 
-        td a {
-            color: #4f46e5;
-            text-decoration: none;
+
+        tbody tr:last-child {
+
+            border-bottom: none;
+        }
+
+
+        tbody tr:nth-child(even) {
+
+            background-color: #f9fafc;
+        }
+
+
+        tbody tr:hover {
+
+            background-color: #eef2ff;
+        }
+
+
+        /* =========================
+           TABLE CELLS
+           ========================= */
+
+        td {
+
+            padding: 12px;
+
+            font-size: 14px;
+
+            color: #334155;
+
+            vertical-align: middle;
+        }
+
+
+        /* =========================
+           STATUS
+           ========================= */
+
+        .status-active {
+
+            color: #16a34a;
+
             font-weight: 600;
-            font-size: 13px;
         }
 
-        td a:hover {
+
+        .status-inactive {
+
+            color: #dc2626;
+
+            font-weight: 600;
+        }
+
+
+        /* =========================
+           ACTION COLUMN
+           ========================= */
+
+        .action-cell {
+
+            white-space: nowrap;
+        }
+
+
+        /* =========================
+           ACTION LINKS
+           ========================= */
+
+        .action-link {
+
+            color: #4f46e5;
+
+            text-decoration: none;
+
+            font-weight: 600;
+
+            font-size: 13px;
+
+            margin-right: 14px;
+        }
+
+
+        .action-link:hover {
+
             text-decoration: underline;
         }
 
-        form {
+
+        /* =========================
+           FORMS
+           ========================= */
+
+        .status-form,
+        .delete-form {
+
             display: inline-block;
-            margin: 0;
+
+            margin: 0 14px 0 0;
         }
 
-        form button {
+
+        /* =========================
+           STATUS BUTTON
+           ========================= */
+
+        .status-btn {
+
             border: none;
+
             padding: 6px 14px;
+
             border-radius: 6px;
+
             font-size: 13px;
+
             font-weight: 600;
+
             cursor: pointer;
+
             color: #ffffff;
-            transition: background-color 0.2s ease;
+
+            transition:
+                background-color 0.2s ease,
+                transform 0.15s ease;
         }
 
-        form:has(input[value="INACTIVE"]) button {
+
+        .status-btn:hover {
+
+            transform: translateY(-1px);
+        }
+
+
+        /* Active faculty -> Deactivate */
+
+        .deactivate-btn {
+
             background-color: #f59e0b;
         }
 
-        form:has(input[value="INACTIVE"]) button:hover {
+
+        .deactivate-btn:hover {
+
             background-color: #d97706;
         }
 
-        form:has(input[value="ACTIVE"]) button {
+
+        /* Inactive faculty -> Activate */
+
+        .activate-btn {
+
             background-color: #16a34a;
         }
 
-        form:has(input[value="ACTIVE"]) button:hover {
+
+        .activate-btn:hover {
+
             background-color: #15803d;
         }
 
-        form[action*="delete"] button {
+
+        /* =========================
+           DELETE BUTTON
+           ========================= */
+
+        .delete-btn {
+
+            border: none;
+
             background-color: #ef4444;
+
+            color: #ffffff;
+
+            padding: 6px 14px;
+
+            border-radius: 6px;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition:
+                background-color 0.2s ease,
+                transform 0.15s ease;
         }
 
-        form[action*="delete"] button:hover {
+
+        .delete-btn:hover {
+
             background-color: #dc2626;
-        }
-    </style>
 
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================
+           EMPTY STATE
+           ========================= */
+
+        .empty-row td {
+
+            text-align: center;
+
+            padding: 24px;
+
+            font-style: italic;
+
+            color: #94a3b8;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+           ========================= */
+
+        @media (max-width: 900px) {
+
+            body {
+
+                padding: 25px 12px;
+            }
+
+
+            h1 {
+
+                font-size: 24px;
+
+                margin-bottom: 25px;
+            }
+
+
+            .top-actions {
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+                gap: 12px;
+            }
+
+
+            .add-faculty-btn,
+            .back-btn {
+
+                text-align: center;
+            }
+
+
+            table {
+
+                display: block;
+
+                overflow-x: auto;
+
+                white-space: nowrap;
+            }
+
+
+            th,
+            td {
+
+                padding: 10px;
+            }
+
+        }
+
+    </style>
 
 </head>
 
+
 <body>
 
-<h1>Faculty Management</h1>
 
-<a href="<%= request.getContextPath() %>/admin/faculties/create">
-    Add Faculty
-</a>
+    <!-- =========================
+         PAGE TITLE
+         ========================= -->
+
+    <h1>
+        Faculty Management
+    </h1>
 
 
+    <!-- =========================
+         TOP ACTION BUTTONS
+         ========================= -->
 
-<a href="<%= request.getContextPath() %>/admin/dashboard">
-    Back to Dashboard
-</a>
+    <div class="top-actions">
 
-<br><br>
 
-<table border="1" cellpadding="8" cellspacing="0">
+        <!-- ADD FACULTY -->
 
-    <tr>
-        <th>ID</th>
-        <th>Employee ID</th>
-        <th>User ID</th>
-        <th>Department ID</th>
-        <th>Status</th>
-        <th>Created At</th>
-        <th>Action</th>
-    </tr>
+        <a
+            class="add-faculty-btn"
+            href="<%= request.getContextPath() %>/admin/faculties/create"
+        >
+            Add Faculty
+        </a>
 
-<%
-    if (faculties != null && !faculties.isEmpty()) {
 
-        for (Faculty faculty : faculties) {
-%>
+        <!-- BACK TO DASHBOARD -->
 
-    <tr>
+        <a
+            class="back-btn"
+            href="<%= request.getContextPath() %>/admin/dashboard"
+        >
+            Back to Admin Dashboard
+        </a>
 
-        <td>
-            <%= faculty.getId() %>
-        </td>
 
-        <td>
-            <%= faculty.getEmployeeId() %>
-        </td>
+    </div>
 
-        <td>
-            <%= faculty.getUserId() %>
-        </td>
 
-        <td>
-            <%= faculty.getDepartmentId() %>
-        </td>
+    <!-- =========================
+         FACULTY TABLE
+         ========================= -->
 
-        <td>
-            <%= faculty.getStatus() %>
-        </td>
+    <table>
 
-        <td>
-            <%= faculty.getCreatedAt() %>
-        </td>
+        <thead>
 
-        <td>
-            <a href="<%= request.getContextPath() %>/admin/faculties/view?id=<%= faculty.getId() %>">
-                View
-            </a>
-            &nbsp; | &nbsp;
-        
-            <a href="<%= request.getContextPath() %>/admin/faculties/edit?id=<%= faculty.getId() %>">
-                Edit
-            </a>
-            &nbsp; | &nbsp;
-        
-            <% if ("ACTIVE".equals(faculty.getStatus())) { %>
-            
-                <form method="post"
-                      action="<%= request.getContextPath() %>/admin/faculties/status"
-                      style="display:inline;">
-            
-                    <input type="hidden"
-                           name="id"
-                           value="<%= faculty.getId() %>">
-            
-                    <input type="hidden"
-                           name="status"
-                           value="INACTIVE">
-            
-                    <button type="submit">
-                        Deactivate
-                    </button>
-                
-                </form>
-            
-            <% } else { %>
-            
-                <form method="post"
-                      action="<%= request.getContextPath() %>/admin/faculties/status"
-                      style="display:inline;">
-            
-                    <input type="hidden"
-                           name="id"
-                           value="<%= faculty.getId() %>">
-            
-                    <input type="hidden"
-                           name="status"
-                           value="ACTIVE">
-            
-                    <button type="submit">
-                        Activate
-                    </button>
-                
-                </form>
-            
-            <% } %>
+            <tr>
 
-            &nbsp; | &nbsp;
+                <th>
+                    ID
+                </th>
 
-            <form method="post"
-                  action="<%= request.getContextPath() %>/admin/faculties/delete"
-                  style="display:inline;"
-                  onsubmit="return confirm('Are you sure you want to permanently delete this faculty?');">
-                        
-                <input type="hidden"
-                       name="id"
-                       value="<%= faculty.getId() %>">
-                        
-                <button type="submit">
-                    Delete
-                </button>
-            
-            </form>
-        </td>
+                <th>
+                    Employee ID
+                </th>
 
-    </tr>
+                <th>
+                    User ID
+                </th>
 
-<%
-        }
+                <th>
+                    Department ID
+                </th>
 
-    } else {
-%>
+                <th>
+                    Status
+                </th>
 
-    <tr>
-        <td colspan="7">
-            No faculty records found.
-        </td>
-    </tr>
+                <th>
+                    Created At
+                </th>
 
-<%
-    }
-%>
+                <th>
+                    Action
+                </th>
 
-</table>
+            </tr>
+
+        </thead>
+
+
+        <tbody>
+
+
+        <%
+            if (faculties != null && !faculties.isEmpty()) {
+
+                for (Faculty faculty : faculties) {
+        %>
+
+
+            <tr>
+
+
+                <!-- ID -->
+
+                <td>
+                    <%= faculty.getId() %>
+                </td>
+
+
+                <!-- EMPLOYEE ID -->
+
+                <td>
+                    <%= faculty.getEmployeeId() %>
+                </td>
+
+
+                <!-- USER ID -->
+
+                <td>
+                    <%= faculty.getUserId() %>
+                </td>
+
+
+                <!-- DEPARTMENT ID -->
+
+                <td>
+                    <%= faculty.getDepartmentId() %>
+                </td>
+
+
+                <!-- STATUS -->
+
+                <td class="<%= "ACTIVE".equals(faculty.getStatus())
+                        ? "status-active"
+                        : "status-inactive" %>">
+
+                    <%= faculty.getStatus() %>
+
+                </td>
+
+
+                <!-- CREATED AT -->
+
+                <td>
+                    <%= faculty.getCreatedAt() %>
+                </td>
+
+
+                <!-- ACTIONS -->
+
+                <td class="action-cell">
+
+
+                    <!-- VIEW -->
+
+                    <a
+                        class="action-link"
+                        href="<%= request.getContextPath() %>/admin/faculties/view?id=<%= faculty.getId() %>"
+                    >
+                        View
+                    </a>
+
+
+                    <!-- EDIT -->
+
+                    <a
+                        class="action-link"
+                        href="<%= request.getContextPath() %>/admin/faculties/edit?id=<%= faculty.getId() %>"
+                    >
+                        Edit
+                    </a>
+
+
+                    <!-- ACTIVATE / DEACTIVATE -->
+
+                    <%
+                        if ("ACTIVE".equals(faculty.getStatus())) {
+                    %>
+
+                        <form
+                            class="status-form"
+                            method="post"
+                            action="<%= request.getContextPath() %>/admin/faculties/status"
+                        >
+
+                            <input
+                                type="hidden"
+                                name="id"
+                                value="<%= faculty.getId() %>"
+                            >
+
+                            <input
+                                type="hidden"
+                                name="status"
+                                value="INACTIVE"
+                            >
+
+                            <button
+                                type="submit"
+                                class="status-btn deactivate-btn"
+                            >
+                                Deactivate
+                            </button>
+
+                        </form>
+
+                    <%
+                        } else {
+                    %>
+
+                        <form
+                            class="status-form"
+                            method="post"
+                            action="<%= request.getContextPath() %>/admin/faculties/status"
+                        >
+
+                            <input
+                                type="hidden"
+                                name="id"
+                                value="<%= faculty.getId() %>"
+                            >
+
+                            <input
+                                type="hidden"
+                                name="status"
+                                value="ACTIVE"
+                            >
+
+                            <button
+                                type="submit"
+                                class="status-btn activate-btn"
+                            >
+                                Activate
+                            </button>
+
+                        </form>
+
+                    <%
+                        }
+                    %>
+
+
+                    <!-- DELETE -->
+
+                    <form
+                        class="delete-form"
+                        method="post"
+                        action="<%= request.getContextPath() %>/admin/faculties/delete"
+                        onsubmit="return confirm('Are you sure you want to permanently delete this faculty?');"
+                    >
+
+                        <input
+                            type="hidden"
+                            name="id"
+                            value="<%= faculty.getId() %>"
+                        >
+
+                        <button
+                            type="submit"
+                            class="delete-btn"
+                        >
+                            Delete
+                        </button>
+
+                    </form>
+
+
+                </td>
+
+
+            </tr>
+
+
+        <%
+                }
+
+            } else {
+        %>
+
+
+            <!-- EMPTY STATE -->
+
+            <tr class="empty-row">
+
+                <td colspan="7">
+                    No faculty records found.
+                </td>
+
+            </tr>
+
+
+        <%
+            }
+        %>
+
+
+        </tbody>
+
+    </table>
+
 
 </body>
+
 </html>

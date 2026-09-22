@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.cms.model.Class;
 import com.cms.model.Department;
 import com.cms.model.Semester;
 import com.cms.model.Subject;
 import com.cms.repository.DepartmentRepository;
+import com.cms.service.ClassService;
 import com.cms.service.SemesterService;
 import com.cms.service.SubjectService;
 
@@ -26,6 +28,7 @@ public class SubjectManagementServlet extends HttpServlet {
     private SubjectService subjectService;
     private DepartmentRepository departmentRepository;
     private SemesterService semesterService;
+    private ClassService classService;
 
     @Override
     public void init() {
@@ -33,6 +36,7 @@ public class SubjectManagementServlet extends HttpServlet {
         subjectService = new SubjectService();
         departmentRepository = new DepartmentRepository();
         semesterService = new SemesterService();
+        classService = new ClassService();
     }
 
     @Override
@@ -63,14 +67,21 @@ public class SubjectManagementServlet extends HttpServlet {
 
     private void loadDropdownData(HttpServletRequest request) {
 
+        // Load active departments
         List<Department> departments =
                 departmentRepository.findAllActiveDepartments();
 
+        // Load active semesters
         List<Semester> semesters =
                 semesterService.getAllActiveSemesters();
 
+        // Load active classes
+        List<Class> classes =
+                classService.getAllActiveClasses();
+
         request.setAttribute("departments", departments);
         request.setAttribute("semesters", semesters);
+        request.setAttribute("classes", classes);
     }
 
     @Override
