@@ -3,7 +3,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.cms.model.Class" %>
 <%@ page import="com.cms.model.Subject" %>
-<%@ page import="com.cms.model.Faculty" %>
 
 <%
     List<Class> classes =
@@ -11,9 +10,6 @@
 
     List<Subject> subjects =
             (List<Subject>) request.getAttribute("subjects");
-
-    List<Faculty> faculties =
-            (List<Faculty>) request.getAttribute("faculties");
 
     String success =
             request.getParameter("success");
@@ -479,60 +475,6 @@
                     </div>
 
                 </div>
-
-
-                <!-- Faculty -->
-
-                <div class="form-group full">
-
-                    <label for="facultyId">
-                        Faculty
-                    </label>
-
-                    <div class="input-wrapper">
-
-                        <svg class="input-icon"
-                             viewBox="0 0 24 24"
-                             fill="none"
-                             stroke="currentColor"
-                             stroke-width="2">
-
-                            <circle cx="12"
-                                    cy="8"
-                                    r="4"/>
-
-                            <path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/>
-
-                        </svg>
-
-                        <select
-                                id="facultyId"
-                                name="facultyId"
-                                required>
-
-                            <option value="">
-                                Select Faculty
-                            </option>
-
-                            <% if (faculties != null) {
-                                for (Faculty faculty : faculties) { %>
-
-                                <option
-                                        value="<%= faculty.getId() %>">
-
-                                    <%= faculty.getEmployeeId() %>
-
-                                </option>
-
-                            <%  }
-                            } %>
-
-                        </select>
-
-                    </div>
-
-                </div>
-
 
                 <!-- Deadline -->
 

@@ -45,15 +45,7 @@
             student.getFirstName() != null
                     ? student.getFirstName()
                     : "Student";
-
-
-    String lastName =
-            student.getLastName() != null
-                    ? student.getLastName()
-                    : "";
-
-
-    String initials =
+String initials =
             firstName.substring(0, 1).toUpperCase();
 %>
 
@@ -284,7 +276,7 @@
 
             color: #4f5d73;
 
-            font-size: 12px;
+            font-size: 13px;
 
             font-weight: 500;
 
@@ -355,7 +347,7 @@
 
             color: #ef4444;
 
-            font-size: 12px;
+            font-size: 13px;
 
             font-weight: 500;
         }
@@ -425,9 +417,9 @@
 
         .page-heading p {
 
-            font-size: 10px;
+            font-size: 11px;
 
-            color: #8b95a7;
+            color: #7b879b;
 
             margin-top: 5px;
         }
@@ -766,9 +758,9 @@
 
         .stat-label {
 
-            font-size: 9px;
+            font-size: 10px;
 
-            color: #8490a4;
+            color: #7b879b;
 
             margin-bottom: 5px;
         }
@@ -792,9 +784,7 @@
 
             display: grid;
 
-            grid-template-columns:
-                minmax(0, 1.55fr)
-                minmax(330px, 0.85fr);
+            grid-template-columns: minmax(0, 1fr);
 
             gap: 20px;
 
@@ -816,7 +806,7 @@
 
             overflow: hidden;
 
-            min-height: 330px;
+            min-height: 0;
         }
 
 
@@ -878,15 +868,17 @@
 
         .assignment-list {
 
-            padding: 0 20px;
+            padding: 0 22px;
         }
 
 
         .assignment-item {
 
-            min-height: 76px;
+            min-height: 82px;
 
             display: flex;
+
+            cursor: default;
 
             align-items: center;
 
@@ -950,11 +942,11 @@
 
         .assignment-title {
 
-            font-size: 13px;
+            font-size: 14px;
 
             font-weight: 700;
 
-            color: #263247;
+            color: #1f2937;
 
             white-space: nowrap;
 
@@ -966,9 +958,9 @@
 
         .assignment-meta {
 
-            font-size: 10px;
+            font-size: 11px;
 
-            color: #8b95a7;
+            color: #7b879b;
 
             margin-top: 5px;
 
@@ -988,19 +980,19 @@
 
         .deadline-date {
 
-            font-size: 10px;
+            font-size: 11px;
 
             font-weight: 600;
 
-            color: #4f5d73;
+            color: #475569;
         }
 
 
         .deadline-time {
 
-            font-size: 9px;
+            font-size: 10px;
 
-            color: #8b95a7;
+            color: #7b879b;
 
             margin-top: 4px;
         }
@@ -1062,120 +1054,6 @@
         }
 
 
-        /* =========================================================
-           PROFILE
-        ========================================================= */
-
-        .profile {
-
-            padding: 20px;
-        }
-
-
-        .profile-top {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 13px;
-
-            padding-bottom: 18px;
-
-            border-bottom: 1px solid #edf0f5;
-
-            margin-bottom: 2px;
-        }
-
-
-        .profile-avatar {
-
-            width: 43px;
-            height: 43px;
-
-            border-radius: 10px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #5146e5,
-                    #7c3aed
-                );
-
-            color: white;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            font-size: 13px;
-
-            font-weight: 700;
-        }
-
-
-        .profile-name {
-
-            font-size: 14px;
-
-            font-weight: 700;
-
-            color: #172033;
-        }
-
-
-        .profile-register {
-
-            font-size: 10px;
-
-            color: #8a94a7;
-
-            margin-top: 4px;
-        }
-
-
-        .profile-row {
-
-            min-height: 48px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            border-bottom:
-                1px solid #f0f2f6;
-        }
-
-
-        .profile-row:last-child {
-
-            border-bottom: none;
-        }
-
-
-        .profile-label {
-
-            font-size: 11px;
-
-            color: #8490a4;
-        }
-
-
-        .profile-value {
-
-            font-size: 11px;
-
-            font-weight: 600;
-
-            color: #263247;
-
-            text-align: right;
-        }
-
 
         /* =========================================================
            RESPONSIVE
@@ -1192,7 +1070,7 @@
 
             .content-grid {
 
-                grid-template-columns: 1fr;
+                grid-template-columns: minmax(0, 1fr);
             }
         }
 
@@ -1440,37 +1318,7 @@
                 Academic
 
             </div>
-
-
-            <!-- Assignments -->
-
-            <a href="#"
-               class="nav-item">
-
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round">
-
-                    <path d="M6 3h12v18H6z"/>
-
-                    <path d="M9 7h6"/>
-                    <path d="M9 11h6"/>
-                    <path d="M9 15h4"/>
-
-                </svg>
-
-                <span>
-                    Assignments
-                </span>
-
-            </a>
-
-
-            <!-- Calendar -->
+<!-- Calendar -->
 
             <a href="<%= contextPath %>/calendar"
    class="nav-item">
@@ -1531,34 +1379,6 @@
 
                 <span>
                     Notifications
-                </span>
-
-            </a>
-
-
-            <!-- Profile -->
-
-            <a href="#"
-               class="nav-item">
-
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round">
-
-                    <circle cx="12"
-                            cy="8"
-                            r="4"/>
-
-                    <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>
-
-                </svg>
-
-                <span>
-                    My Profile
                 </span>
 
             </a>
@@ -1954,7 +1774,7 @@
                         </div>
 
 
-                        <a href="#"
+                        <a href="<%= contextPath %>/calendar"
                            class="card-link">
 
                             View all
@@ -2193,208 +2013,7 @@
 
 
                 </div>
-
-
-
-                <!-- =================================================
-                     PROFILE CARD
-                ================================================== -->
-
-                <div class="card">
-
-
-                    <div class="card-header">
-
-                        <div>
-
-                            <div class="card-title">
-
-                                Student Profile
-
-                            </div>
-
-
-                            <div class="card-subtitle">
-
-                                Your academic information
-
-                            </div>
-
-                        </div>
-
-
-                        <a href="#"
-                           class="card-link">
-
-                            Profile
-
-                        </a>
-
-                    </div>
-
-
-
-                    <div class="profile">
-
-
-                        <!-- PROFILE HEADER -->
-
-                        <div class="profile-top">
-
-
-                            <div class="profile-avatar">
-
-                                <%= initials %>
-
-                            </div>
-
-
-                            <div>
-
-
-                                <div class="profile-name">
-
-                                    <%= firstName %>
-
-
-                                    <%
-                                        if (!lastName.trim().isEmpty()) {
-                                    %>
-
-                                        <%= " " + lastName %>
-
-                                    <%
-                                        }
-                                    %>
-
-                                </div>
-
-
-                                <div class="profile-register">
-
-                                    <%= student.getRegisterNo() %>
-
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-
-
-
-                        <!-- REGISTER NUMBER -->
-
-                        <div class="profile-row">
-
-                            <span class="profile-label">
-
-                                Register Number
-
-                            </span>
-
-
-                            <span class="profile-value">
-
-                                <%= student.getRegisterNo() %>
-
-                            </span>
-
-                        </div>
-
-
-
-                        <!-- DEPARTMENT -->
-
-                        <div class="profile-row">
-
-                            <span class="profile-label">
-
-                                Department
-
-                            </span>
-
-
-                            <span class="profile-value">
-
-                                <%= student.getDepartment() %>
-
-                            </span>
-
-                        </div>
-
-
-
-                        <!-- SEMESTER -->
-
-                        <div class="profile-row">
-
-                            <span class="profile-label">
-
-                                Semester
-
-                            </span>
-
-
-                            <span class="profile-value">
-
-                                <%= student.getSemester() %>
-
-                            </span>
-
-                        </div>
-
-
-
-                        <!-- ADMISSION YEAR -->
-
-                        <div class="profile-row">
-
-                            <span class="profile-label">
-
-                                Admission Year
-
-                            </span>
-
-
-                            <span class="profile-value">
-
-                                <%= student.getAdmissionYear() %>
-
-                            </span>
-
-                        </div>
-
-
-
-                        <!-- CLASS -->
-
-                        <div class="profile-row">
-
-                            <span class="profile-label">
-
-                                Class ID
-
-                            </span>
-
-
-                            <span class="profile-value">
-
-                                <%= student.getClassId() %>
-
-                            </span>
-
-                        </div>
-
-
-                    </div>
-
-
-                </div>
-
-
-            </div>
+</div>
 
 
         </section>

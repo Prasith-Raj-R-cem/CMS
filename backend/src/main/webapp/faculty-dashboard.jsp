@@ -746,9 +746,9 @@
             <!-- MY ASSIGNMENTS -->
 
             <a
-                href="#"
-                class="nav-item"
-            >
+    href="<%= request.getContextPath() %>/faculty/assignments"
+    class="nav-item"
+>
 
                 <svg
                     class="nav-icon"
@@ -940,9 +940,9 @@
                 <!-- MY ASSIGNMENTS -->
 
                 <a
-                    href="#"
-                    class="card"
-                >
+    href="<%= request.getContextPath() %>/faculty/assignments"
+    class="card"
+>
 
                     <div class="card-icon">
 

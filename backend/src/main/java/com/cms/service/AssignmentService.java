@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.cms.model.Assignment;
 import com.cms.model.AssignmentSummary;
+import com.cms.model.FacultyAssignmentSummary;
 import com.cms.repository.AssignmentRepository;
 
 public class AssignmentService {
@@ -131,6 +132,31 @@ public class AssignmentService {
 
 
     // =====================================================
+    // FIND ASSIGNMENT FOR STUDENT
+    // VERIFY ASSIGNMENT BELONGS TO STUDENT'S CLASS
+    // =====================================================
+    
+    public Assignment findAssignmentForStudent(
+            long assignmentId,
+            long classId) {
+            
+        if (assignmentId <= 0) {
+            return null;
+        }
+    
+        if (classId <= 0) {
+            return null;
+        }
+    
+        return assignmentRepository
+                .findActiveAssignmentByIdAndClass(
+                        assignmentId,
+                        classId
+                );
+    }
+
+
+    // =====================================================
     // GET ASSIGNMENTS FOR CLASS
     // =====================================================
 
@@ -161,5 +187,18 @@ public class AssignmentService {
                 .findUpcomingAssignmentSummariesByClass(
                         classId
                 );
+    }
+
+
+    public List<FacultyAssignmentSummary> getAssignmentsByFaculty(
+        long facultyId) {
+
+        if (facultyId <= 0) {
+            return List.of();
+        }
+
+        return assignmentRepository.findAssignmentsByFaculty(
+                facultyId
+        );
     }
 }

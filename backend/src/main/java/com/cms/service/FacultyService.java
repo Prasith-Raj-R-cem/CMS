@@ -318,4 +318,13 @@ public class FacultyService {
     public List<Faculty> getAllActiveFaculties() {
         return facultyRepository.findAllActiveFaculties();
     }
+
+    public long findFacultyIdByUserId(long userId) {
+        
+        if (userId <= 0) {
+            return -1;
+        }
+    
+        return facultyRepository.findFacultyIdByUserId(userId);
+    }
 }

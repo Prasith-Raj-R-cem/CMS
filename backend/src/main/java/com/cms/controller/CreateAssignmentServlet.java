@@ -5,35 +5,53 @@ import java.util.List;
 
 import com.cms.model.Assignment;
 import com.cms.model.Class;
-import com.cms.model.Faculty;
+import com.cms.model.Role;
 import com.cms.model.Subject;
+import com.cms.model.User;
 import com.cms.repository.ClassRepository;
-import com.cms.repository.FacultyRepository;
 import com.cms.repository.SubjectRepository;
 import com.cms.service.AssignmentService;
+import com.cms.service.FacultyService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/faculty/assignments/create")
 public class CreateAssignmentServlet extends HttpServlet {
 
     private AssignmentService assignmentService;
+
     private ClassRepository classRepository;
+
     private SubjectRepository subjectRepository;
-    private FacultyRepository facultyRepository;
+
+    private FacultyService facultyService;
+
 
     @Override
-    public void init() {
+    public void init() throws ServletException {
 
-        assignmentService = new AssignmentService();
-        classRepository = new ClassRepository();
-        subjectRepository = new SubjectRepository();
-        facultyRepository = new FacultyRepository();
+        assignmentService =
+                new AssignmentService();
+
+        classRepository =
+                new ClassRepository();
+
+        subjectRepository =
+                new SubjectRepository();
+
+        facultyService =
+                new FacultyService();
     }
+
+
+    // =====================================================
+    // GET — SHOW CREATE ASSIGNMENT PAGE
+    // =====================================================
 
     @Override
     protected void doGet(
@@ -41,27 +59,82 @@ public class CreateAssignmentServlet extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
 
+        HttpSession session =
+                request.getSession(false);
+
+        if (session == null) {
+
+            response.sendRedirect(
+                    request.getContextPath()
+                            + "/login"
+            );
+
+            return;
+        }
+
+
+        Object userObject =
+                session.getAttribute("user");
+
+        if (!(userObject instanceof User)) {
+
+            response.sendRedirect(
+                    request.getContextPath()
+                            + "/login"
+            );
+
+            return;
+        }
+
+
+        User user =
+                (User) userObject;
+
+
+        if (user.getRole() != Role.FACULTY) {
+
+            response.sendError(
+                    HttpServletResponse.SC_FORBIDDEN,
+                    "Faculty access required."
+            );
+
+            return;
+        }
+
+
         // Load active classes
         List<Class> classes =
                 classRepository.findAllActiveClasses();
+
 
         // Load active subjects
         List<Subject> subjects =
                 subjectRepository.findAllActiveSubjects();
 
-        // Load active faculties
-        List<Faculty> faculties =
-                facultyRepository.findAllActiveFaculties();
 
-        // Send data to JSP
-        request.setAttribute("classes", classes);
-        request.setAttribute("subjects", subjects);
-        request.setAttribute("faculties", faculties);
+        request.setAttribute(
+                "classes",
+                classes
+        );
+
+        request.setAttribute(
+                "subjects",
+                subjects
+        );
+
 
         request.getRequestDispatcher(
                 "/create-assignment.jsp"
-        ).forward(request, response);
+        ).forward(
+                request,
+                response
+        );
     }
+
+
+    // =====================================================
+    // POST — CREATE ASSIGNMENT
+    // =====================================================
 
     @Override
     protected void doPost(
@@ -70,6 +143,104 @@ public class CreateAssignmentServlet extends HttpServlet {
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
+
+
+        // ============================================
+        // 1. GET SESSION
+        // ============================================
+
+        HttpSession session =
+                request.getSession(false);
+
+        if (session == null) {
+
+            response.sendRedirect(
+                    request.getContextPath()
+                            + "/login"
+            );
+
+            return;
+        }
+
+
+        // ============================================
+        // 2. GET USER
+        // ============================================
+
+        Object userObject =
+                session.getAttribute("user");
+
+        if (!(userObject instanceof User)) {
+
+            response.sendRedirect(
+                    request.getContextPath()
+                            + "/login"
+            );
+
+            return;
+        }
+
+
+        User user =
+                (User) userObject;
+
+
+        // ============================================
+        // 3. CHECK FACULTY ROLE
+        // ============================================
+
+        if (user.getRole() != Role.FACULTY) {
+
+            response.sendError(
+                    HttpServletResponse.SC_FORBIDDEN,
+                    "Faculty access required."
+            );
+
+            return;
+        }
+
+
+        // ============================================
+        // 4. GET USER ID
+        // ============================================
+
+        long userId =
+                user.getId();
+
+        if (userId <= 0) {
+
+            response.sendError(
+                    HttpServletResponse.SC_FORBIDDEN,
+                    "Invalid user session."
+            );
+
+            return;
+        }
+
+
+        // ============================================
+        // 5. FIND FACULTY ID
+        // ============================================
+
+        long facultyId =
+                facultyService.findFacultyIdByUserId(
+                        userId
+                );
+
+        if (facultyId <= 0) {
+
+            response.sendError(
+                    HttpServletResponse.SC_FORBIDDEN,
+                    "Faculty profile not found."
+            );
+
+            return;
+        }
+
+
+        // ============================================
+        // 6. READ FORM DATA
+        // ============================================
 
         String title =
                 request.getParameter("title");
@@ -83,51 +254,89 @@ public class CreateAssignmentServlet extends HttpServlet {
         String subjectIdValue =
                 request.getParameter("subjectId");
 
-        String facultyIdValue =
-                request.getParameter("facultyId");
-
         String deadline =
                 request.getParameter("deadline");
 
+
         long classId;
+
         long subjectId;
-        long facultyId;
+
+
+        // ============================================
+        // 7. PARSE CLASS + SUBJECT
+        // ============================================
 
         try {
 
-            classId = Long.parseLong(classIdValue);
-            subjectId = Long.parseLong(subjectIdValue);
-            facultyId = Long.parseLong(facultyIdValue);
+            classId =
+                    Long.parseLong(classIdValue);
+
+            subjectId =
+                    Long.parseLong(subjectIdValue);
 
         } catch (Exception e) {
 
             response.sendError(
                     HttpServletResponse.SC_BAD_REQUEST,
-                    "Invalid class, subject or faculty selection."
+                    "Invalid class or subject selection."
             );
 
             return;
         }
 
-        Assignment assignment = new Assignment();
+
+        // ============================================
+        // 8. CREATE ASSIGNMENT OBJECT
+        // ============================================
+
+        Assignment assignment =
+                new Assignment();
 
         assignment.setTitle(title);
-        assignment.setDescription(description);
-        assignment.setClassId(classId);
-        assignment.setSubjectId(subjectId);
-        assignment.setFacultyId(facultyId);
-        assignment.setDeadline(deadline);
+
+        assignment.setDescription(
+                description
+        );
+
+        assignment.setClassId(
+                classId
+        );
+
+        assignment.setSubjectId(
+                subjectId
+        );
+
+        // IMPORTANT:
+        // Faculty ID comes from the logged-in user.
+        assignment.setFacultyId(
+                facultyId
+        );
+
+        assignment.setDeadline(
+                deadline
+        );
+
+
+        // ============================================
+        // 9. SAVE ASSIGNMENT
+        // ============================================
 
         long assignmentId =
                 assignmentService.createAssignment(
                         assignment
                 );
 
+
+        // ============================================
+        // 10. RESULT
+        // ============================================
+
         if (assignmentId > 0) {
 
             response.sendRedirect(
                     request.getContextPath()
-                            + "/faculty/assignments/create?success=true"
+                            + "/faculty/assignments"
             );
 
         } else {

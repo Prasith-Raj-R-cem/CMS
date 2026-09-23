@@ -119,6 +119,42 @@ public class FacultyRepository {
         return null;
     }
 
+
+    public long findFacultyIdByUserId(long userId) {
+        
+            if (userId <= 0) {
+                return -1;
+            }
+        
+            String sql = """
+                    SELECT id
+                    FROM faculties
+                    WHERE user_id = ?
+                      AND status = 'ACTIVE'
+                    """;
+        
+            try (
+                    Connection connection = DatabaseConnection.getConnection();
+                    PreparedStatement statement =
+                            connection.prepareStatement(sql)
+            ) {
+        
+                statement.setLong(1, userId);
+        
+                try (ResultSet resultSet = statement.executeQuery()) {
+                
+                    if (resultSet.next()) {
+                        return resultSet.getLong("id");
+                    }
+                }
+        
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        
+            return -1;
+        }
+
     public List<Faculty> findAllFaculties() {
 
         List<Faculty> faculties = new ArrayList<>();

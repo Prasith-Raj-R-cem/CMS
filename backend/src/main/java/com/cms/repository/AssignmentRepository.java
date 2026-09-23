@@ -9,8 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.cms.model.Assignment;
-import com.cms.util.DatabaseConnection;
 import com.cms.model.AssignmentSummary;
+import com.cms.model.FacultyAssignmentSummary;
+import com.cms.util.DatabaseConnection;
 
 
 public class AssignmentRepository {
@@ -129,6 +130,63 @@ public class AssignmentRepository {
 
         return null;
     }
+
+        // =====================================================
+        // FIND ACTIVE ASSIGNMENT BY ID AND CLASS ID
+        // USED FOR STUDENT ASSIGNMENT DETAILS
+        // =====================================================
+
+        public Assignment findActiveAssignmentByIdAndClass(
+                long assignmentId,
+                long classId) {
+
+            String sql = """
+                    SELECT
+                        a.id,
+                        a.title,
+                        a.description,
+                        a.class_id,
+                        a.subject_id,
+                        a.faculty_id,
+                        a.deadline,
+                        a.status,
+                        a.created_at,
+                        a.updated_at
+                    FROM assignments a
+                    WHERE a.id = ?
+                      AND a.class_id = ?
+                      AND a.status = 'ACTIVE'
+                    """;
+
+            try (
+                    Connection connection =
+                            DatabaseConnection.getConnection();
+
+                    PreparedStatement statement =
+                            connection.prepareStatement(sql)
+            ) {
+
+                statement.setLong(1, assignmentId);
+                statement.setLong(2, classId);
+
+                try (
+                        ResultSet resultSet =
+                                statement.executeQuery()
+                ) {
+
+                    if (resultSet.next()) {
+
+                        return mapAssignment(resultSet);
+                    }
+                }
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+            }
+
+            return null;
+        }
 
 
     // =====================================================
@@ -387,4 +445,128 @@ public class AssignmentRepository {
 
         return assignment;
     }
+
+
+    public List<FacultyAssignmentSummary> findAssignmentsByFaculty(
+        long facultyId) {
+
+            List<FacultyAssignmentSummary> assignments =
+                    new ArrayList<>();
+
+            String sql = """
+                    SELECT
+                        a.id,
+                        a.title,
+                        a.description,
+
+                        c.class_name,
+                        c.section,
+
+                        s.subject_code,
+                        s.subject_name,
+
+                        a.deadline,
+                        a.status,
+                        a.created_at
+
+                    FROM assignments a
+
+                    INNER JOIN classes c
+                        ON a.class_id = c.id
+
+                    INNER JOIN subjects s
+                        ON a.subject_id = s.id
+
+                    WHERE a.faculty_id = ?
+
+                    ORDER BY a.created_at DESC
+                    """;
+
+            try (
+                    Connection connection =
+                            DatabaseConnection.getConnection();
+
+                    PreparedStatement statement =
+                            connection.prepareStatement(sql)
+            ) {
+
+                statement.setLong(1, facultyId);
+
+                try (
+                        ResultSet resultSet =
+                                statement.executeQuery()
+                ) {
+
+                    while (resultSet.next()) {
+
+                        FacultyAssignmentSummary summary =
+                                new FacultyAssignmentSummary();
+
+                        summary.setId(
+                                resultSet.getLong("id")
+                        );
+
+                        summary.setTitle(
+                                resultSet.getString("title")
+                        );
+
+                        summary.setDescription(
+                                resultSet.getString("description")
+                        );
+
+                        summary.setClassName(
+                                resultSet.getString("class_name")
+                        );
+
+                        summary.setSection(
+                                resultSet.getString("section")
+                        );
+
+                        summary.setSubjectCode(
+                                resultSet.getString("subject_code")
+                        );
+
+                        summary.setSubjectName(
+                                resultSet.getString("subject_name")
+                        );
+
+                        Timestamp deadline =
+                                resultSet.getTimestamp("deadline");
+
+                        if (deadline != null) {
+
+                            summary.setDeadline(
+                                    deadline
+                                            .toLocalDateTime()
+                                            .toString()
+                            );
+                        }
+
+                        summary.setStatus(
+                                resultSet.getString("status")
+                        );
+
+                        Timestamp createdAt =
+                                resultSet.getTimestamp("created_at");
+
+                        if (createdAt != null) {
+
+                            summary.setCreatedAt(
+                                    createdAt
+                                            .toLocalDateTime()
+                                            .toString()
+                            );
+                        }
+
+                        assignments.add(summary);
+                    }
+                }
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+            }
+
+            return assignments;
+        }
 }

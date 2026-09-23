@@ -44,11 +44,19 @@
         }
 
 
+        /* =====================================================
+           PAGE
+        ====================================================== */
+
         .page {
 
             padding: 32px;
         }
 
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
 
         .page-header {
 
@@ -84,13 +92,24 @@
         }
 
 
+        /* =====================================================
+           HEADER BUTTONS
+        ====================================================== */
+
+        .header-actions {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+
+        .back-button,
         .create-button {
 
             text-decoration: none;
-
-            background: #4f46e5;
-
-            color: white;
 
             padding: 11px 18px;
 
@@ -99,6 +118,40 @@
             font-size: 14px;
 
             font-weight: 600;
+
+            transition: 0.2s ease;
+        }
+
+
+        /* BACK TO DASHBOARD */
+
+        .back-button {
+
+            background: white;
+
+            color: #475569;
+
+            border: 1px solid #e2e8f0;
+        }
+
+
+        .back-button:hover {
+
+            background: #f8fafc;
+
+            border-color: #cbd5e1;
+        }
+
+
+        /* CREATE ASSIGNMENT */
+
+        .create-button {
+
+            background: #4f46e5;
+
+            color: white;
+
+            border: 1px solid #4f46e5;
         }
 
 
@@ -107,6 +160,10 @@
             background: #4338ca;
         }
 
+
+        /* =====================================================
+           ASSIGNMENT CONTAINER
+        ====================================================== */
 
         .assignment-container {
 
@@ -117,6 +174,10 @@
             gap: 16px;
         }
 
+
+        /* =====================================================
+           ASSIGNMENT CARD
+        ====================================================== */
 
         .assignment-card {
 
@@ -132,6 +193,10 @@
                 0 4px 12px rgba(15, 23, 42, 0.04);
         }
 
+
+        /* =====================================================
+           TOP SECTION
+        ====================================================== */
 
         .assignment-top {
 
@@ -169,6 +234,10 @@
         }
 
 
+        /* =====================================================
+           META INFORMATION
+        ====================================================== */
+
         .meta-row {
 
             display: flex;
@@ -203,6 +272,10 @@
         }
 
 
+        /* =====================================================
+           STATUS
+        ====================================================== */
+
         .status {
 
             display: inline-flex;
@@ -223,6 +296,10 @@
         }
 
 
+        /* =====================================================
+           BOTTOM SECTION
+        ====================================================== */
+
         .assignment-bottom {
 
             display: flex;
@@ -238,6 +315,10 @@
             border-top: 1px solid #f1f5f9;
         }
 
+
+        /* =====================================================
+           DATES
+        ====================================================== */
 
         .dates {
 
@@ -259,39 +340,9 @@
         }
 
 
-        .actions {
-
-            display: flex;
-
-            gap: 8px;
-        }
-
-
-        .action-button {
-
-            text-decoration: none;
-
-            padding: 8px 13px;
-
-            border-radius: 8px;
-
-            font-size: 13px;
-
-            font-weight: 600;
-
-            border: 1px solid #e2e8f0;
-
-            color: #475569;
-
-            background: white;
-        }
-
-
-        .action-button:hover {
-
-            background: #f8fafc;
-        }
-
+        /* =====================================================
+           EMPTY STATE
+        ====================================================== */
 
         .empty-state {
 
@@ -321,7 +372,12 @@
         }
 
 
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
+
         @media (max-width: 800px) {
+
 
             .page {
 
@@ -336,6 +392,16 @@
                 align-items: flex-start;
 
                 gap: 16px;
+            }
+
+
+            .header-actions {
+
+                width: 100%;
+
+                display: flex;
+
+                flex-wrap: wrap;
             }
 
 
@@ -361,6 +427,7 @@
 
                 gap: 7px;
             }
+
         }
 
     </style>
@@ -380,29 +447,54 @@
 
     <div class="page-header">
 
+
         <div>
 
             <h1 class="page-title">
+
                 My Assignments
+
             </h1>
 
+
             <div class="page-subtitle">
-                View and manage assignments created for your classes.
+
+                View assignments created for your classes.
+
             </div>
 
         </div>
 
 
-        <a
-            href="<%= request.getContextPath() %>/faculty/assignments/create"
-            class="create-button">
+        <div class="header-actions">
 
-            + Create Assignment
 
-        </a>
+            <!-- BACK TO DASHBOARD -->
+
+            <a
+                href="<%= request.getContextPath() %>/faculty/dashboard"
+                class="back-button">
+
+                ← Back to Dashboard
+
+            </a>
+
+
+            <!-- CREATE ASSIGNMENT -->
+
+            <a
+                href="<%= request.getContextPath() %>/faculty/assignments/create"
+                class="create-button">
+
+                + Create Assignment
+
+            </a>
+
+
+        </div>
+
 
     </div>
-
 
 
     <!-- =====================================================
@@ -419,6 +511,10 @@
 %>
 
 
+        <!-- =================================================
+             ASSIGNMENT CARD
+        ================================================== -->
+
         <div class="assignment-card">
 
 
@@ -432,12 +528,16 @@
                 <div>
 
 
+                    <!-- TITLE -->
+
                     <div class="assignment-title">
 
                         <%= assignment.getTitle() %>
 
                     </div>
 
+
+                    <!-- DESCRIPTION -->
 
 <%
     if (assignment.getDescription() != null
@@ -455,6 +555,10 @@
 %>
 
 
+                    <!-- =================================================
+                         CLASS + SUBJECT
+                    ================================================== -->
+
                     <div class="meta-row">
 
 
@@ -463,17 +567,23 @@
                         <div class="meta-item">
 
                             <span class="meta-label">
+
                                 Class:
+
                             </span>
 
+
                             <%= assignment.getClassName() %>
+
 
 <%
     if (assignment.getSection() != null
             && !assignment.getSection().isBlank()) {
 %>
 
-                            - <%= assignment.getSection() %>
+                            -
+
+                            <%= assignment.getSection() %>
 
 <%
     }
@@ -487,10 +597,14 @@
                         <div class="meta-item">
 
                             <span class="meta-label">
+
                                 Subject:
+
                             </span>
 
+
                             <%= assignment.getSubjectName() %>
+
 
 <%
     if (assignment.getSubjectCode() != null
@@ -508,11 +622,13 @@
 
                     </div>
 
+
                 </div>
 
 
-
-                <!-- STATUS -->
+                <!-- =================================================
+                     STATUS
+                ================================================== -->
 
                 <div class="status">
 
@@ -522,7 +638,6 @@
 
 
             </div>
-
 
 
             <!-- =================================================
@@ -535,11 +650,14 @@
                 <div class="dates">
 
 
-                    <!-- DEADLINE -->
+                    <!-- =================================================
+                         DEADLINE
+                    ================================================== -->
 
                     <div class="deadline">
 
                         Deadline:
+
 
 <%
     String deadline =
@@ -559,16 +677,22 @@
                 parts.length > 1
                         ? parts[1]
                         : "";
-
 %>
+
 
                         <%= date %>
 
-                        <% if (!time.isBlank()) { %>
 
-                            <%= time %>
+<%
+        if (!time.isBlank()) {
+%>
 
-                        <% } %>
+                        <%= time %>
+
+<%
+        }
+%>
+
 
 <%
     } else {
@@ -583,11 +707,14 @@
                     </div>
 
 
-                    <!-- CREATED -->
+                    <!-- =================================================
+                         CREATED DATE
+                    ================================================== -->
 
                     <div>
 
                         Created:
+
 
 <%
     String createdAt =
@@ -602,10 +729,11 @@
                 parts.length > 0
                         ? parts[0]
                         : "";
-
 %>
 
+
                         <%= createdDate %>
+
 
 <%
     } else {
@@ -618,42 +746,6 @@
 %>
 
                     </div>
-
-
-                </div>
-
-
-
-                <!-- ACTIONS -->
-
-                <div class="actions">
-
-
-                    <a
-                        href="<%= request.getContextPath() %>/faculty/assignments/view?id=<%= assignment.getId() %>"
-                        class="action-button">
-
-                        View
-
-                    </a>
-
-
-                    <a
-                        href="<%= request.getContextPath() %>/faculty/assignments/edit?id=<%= assignment.getId() %>"
-                        class="action-button">
-
-                        Edit
-
-                    </a>
-
-
-                    <a
-                        href="<%= request.getContextPath() %>/faculty/assignments/delete?id=<%= assignment.getId() %>"
-                        class="action-button">
-
-                        Delete
-
-                    </a>
 
 
                 </div>
@@ -678,17 +770,20 @@
 
         <div class="empty-state">
 
+
             <div class="empty-title">
 
                 No assignments yet
 
             </div>
 
+
             <div>
 
                 You haven't created any assignments for your classes.
 
             </div>
+
 
         </div>
 

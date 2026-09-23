@@ -15,9 +15,11 @@
                     request.getAttribute("assignments");
 
     if (student == null) {
+
         response.sendRedirect(
                 request.getContextPath() + "/login"
         );
+
         return;
     }
 
@@ -28,11 +30,6 @@
             student.getFirstName() != null
                     ? student.getFirstName()
                     : "Student";
-
-    String lastName =
-            student.getLastName() != null
-                    ? student.getLastName()
-                    : "";
 
     String initials =
             firstName.substring(0, 1).toUpperCase();
@@ -168,7 +165,8 @@
             justify-content: center;
 
             box-shadow:
-                0 6px 15px rgba(79, 70, 229, 0.20);
+                0 6px 15px
+                rgba(79, 70, 229, 0.20);
         }
 
 
@@ -255,7 +253,7 @@
 
             color: #4f5d73;
 
-            font-size: 12px;
+            font-size: 13px;
 
             font-weight: 500;
         }
@@ -290,7 +288,8 @@
             color: #ffffff;
 
             box-shadow:
-                0 7px 16px rgba(79, 70, 229, 0.18);
+                0 7px 16px
+                rgba(79, 70, 229, 0.18);
         }
 
 
@@ -322,7 +321,7 @@
 
             color: #ef4444;
 
-            font-size: 12px;
+            font-size: 13px;
 
             font-weight: 500;
         }
@@ -388,11 +387,11 @@
 
         .page-heading p {
 
-            font-size: 10px;
+            font-size: 11px;
 
-            color: #8b95a7;
+            color: #7b879b;
 
-            margin-top: 5px;
+            margin-top: 6px;
         }
 
 
@@ -424,6 +423,8 @@
             justify-content: center;
 
             color: #64748b;
+
+            cursor: pointer;
         }
 
 
@@ -480,7 +481,7 @@
 
         .user-role {
 
-            font-size: 9px;
+            font-size: 10px;
 
             color: #667085;
 
@@ -532,11 +533,11 @@
 
         .calendar-description {
 
-            font-size: 10px;
+            font-size: 11px;
 
-            color: #8a94a7;
+            color: #7b879b;
 
-            margin-top: 5px;
+            margin-top: 6px;
         }
 
 
@@ -584,7 +585,7 @@
 
         .calendar-toolbar {
 
-            height: 65px;
+            height: 70px;
 
             display: flex;
 
@@ -617,7 +618,6 @@
         .month-button {
 
             width: 32px;
-
             height: 32px;
 
             border: 1px solid #e3e6ee;
@@ -679,11 +679,11 @@
 
             justify-content: center;
 
-            font-size: 10px;
+            font-size: 11px;
 
             font-weight: 700;
 
-            color: #8a94a7;
+            color: #7b879b;
 
             text-transform: uppercase;
         }
@@ -704,7 +704,7 @@
 
         .calendar-day {
 
-            min-height: 105px;
+            min-height: 118px;
 
             border-right:
                 1px solid #edf0f5;
@@ -712,7 +712,7 @@
             border-bottom:
                 1px solid #edf0f5;
 
-            padding: 9px;
+            padding: 11px;
 
             position: relative;
         }
@@ -727,7 +727,6 @@
         .day-number {
 
             width: 25px;
-
             height: 25px;
 
             display: flex;
@@ -736,7 +735,7 @@
 
             justify-content: center;
 
-            font-size: 10px;
+            font-size: 11px;
 
             font-weight: 600;
 
@@ -776,7 +775,7 @@
 
             margin-top: 5px;
 
-            padding: 6px 7px;
+            padding: 8px 9px;
 
             border-radius: 6px;
 
@@ -788,18 +787,29 @@
             overflow: hidden;
 
             cursor: pointer;
+
+            transition:
+                background 0.15s ease,
+                transform 0.15s ease,
+                box-shadow 0.15s ease;
         }
 
 
         .calendar-event:hover {
 
             background: #e8e6ff;
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 3px 8px
+                rgba(79, 70, 229, 0.12);
         }
 
 
         .event-title {
 
-            font-size: 9px;
+            font-size: 11px;
 
             font-weight: 700;
 
@@ -815,9 +825,9 @@
 
         .event-subject {
 
-            font-size: 8px;
+            font-size: 10px;
 
-            color: #6b7280;
+            color: #64748b;
 
             margin-top: 3px;
 
@@ -828,6 +838,12 @@
             text-overflow: ellipsis;
         }
 
+
+
+        .calendar-event:focus-visible {
+            outline: 2px solid #5548e8;
+            outline-offset: 2px;
+        }
 
         /* =========================================================
            EMPTY
@@ -846,7 +862,6 @@
         .empty-calendar svg {
 
             width: 35px;
-
             height: 35px;
 
             margin-bottom: 10px;
@@ -867,7 +882,7 @@
 
             .calendar-day {
 
-                min-height: 85px;
+                min-height: 95px;
             }
 
             .event-subject {
@@ -950,7 +965,7 @@
 
             .calendar-day {
 
-                min-height: 65px;
+                min-height: 70px;
 
                 padding: 5px;
             }
@@ -959,7 +974,6 @@
             .day-number {
 
                 width: 21px;
-
                 height: 21px;
 
                 font-size: 9px;
@@ -976,7 +990,7 @@
 
             .event-title {
 
-                font-size: 7px;
+                font-size: 9px;
             }
 
 
@@ -1107,43 +1121,12 @@
 
 
             <div class="nav-section-title"
-                 style="margin-top:24px;">
+                 style="margin-top:20px;">
 
                 Academic
 
             </div>
-
-
-            <!-- ASSIGNMENTS -->
-
-            <a href="#"
-               class="nav-item">
-
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round">
-
-                    <path d="M6 3h12v18H6z"/>
-
-                    <path d="M9 7h6"/>
-                    <path d="M9 11h6"/>
-                    <path d="M9 15h4"/>
-
-                </svg>
-
-                <span>
-                    Assignments
-                </span>
-
-            </a>
-
-
-
-            <!-- CALENDAR -->
+<!-- CALENDAR -->
 
             <a href="<%= contextPath %>/calendar"
                class="nav-item active">
@@ -1169,10 +1152,13 @@
                     <path d="M3 10h18"/>
 
                     <path d="M8 14h.01"/>
+
                     <path d="M12 14h.01"/>
+
                     <path d="M16 14h.01"/>
 
                     <path d="M8 18h.01"/>
+
                     <path d="M12 18h.01"/>
 
                 </svg>
@@ -1206,35 +1192,6 @@
 
                 <span>
                     Notifications
-                </span>
-
-            </a>
-
-
-
-            <!-- PROFILE -->
-
-            <a href="#"
-               class="nav-item">
-
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    stroke-linecap="round"
-                    stroke-linejoin="round">
-
-                    <circle cx="12"
-                            cy="8"
-                            r="4"/>
-
-                    <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>
-
-                </svg>
-
-                <span>
-                    My Profile
                 </span>
 
             </a>
@@ -1305,6 +1262,7 @@
             </div>
 
 
+
             <div class="topbar-user">
 
 
@@ -1327,11 +1285,13 @@
                 </button>
 
 
+
                 <div class="avatar">
 
                     <%= initials %>
 
                 </div>
+
 
 
                 <div class="user-details">
@@ -1378,6 +1338,7 @@
 
                     </div>
 
+
                     <div class="calendar-description">
 
                         Assignments and academic deadlines for your class
@@ -1385,6 +1346,7 @@
                     </div>
 
                 </div>
+
 
 
                 <button class="today-button"
@@ -1413,6 +1375,7 @@
                     </div>
 
 
+
                     <div class="month-controls">
 
 
@@ -1432,6 +1395,7 @@
                             </svg>
 
                         </button>
+
 
 
                         <button class="month-button"
@@ -1504,24 +1468,47 @@
 
 <script>
 
+
     /* =========================================================
        ASSIGNMENT DATA FROM JSP
+       
+       IMPORTANT:
+       Assignment ID has been added so that clicking an
+       assignment can open its details page.
     ========================================================= */
 
     const assignments = [
 
         <%
+
             if (assignments != null) {
 
-                for (int i = 0;
-                     i < assignments.size();
-                     i++) {
+                for (
+                    int i = 0;
+                    i < assignments.size();
+                    i++
+                ) {
 
                     AssignmentSummary assignment =
                             assignments.get(i);
+
         %>
 
+
         {
+
+            /*
+             * Assignment ID
+             */
+
+            id:
+                <%= assignment.getId() %>,
+
+
+            /*
+             * Assignment title
+             */
+
             title:
                 "<%= assignment.getTitle()
                         .replace("\\", "\\\\")
@@ -1529,30 +1516,55 @@
                         .replace("\n", " ")
                         .replace("\r", " ") %>",
 
+
+            /*
+             * Subject name
+             */
+
             subject:
                 "<%= assignment.getSubjectName() != null
                         ? assignment.getSubjectName()
                             .replace("\\", "\\\\")
                             .replace("\"", "\\\"")
+                            .replace("\n", " ")
+                            .replace("\r", " ")
                         : "" %>",
+
+
+            /*
+             * Deadline
+             */
 
             deadline:
                 "<%= assignment.getDeadline() != null
                         ? assignment.getDeadline()
                         : "" %>"
+
         }
 
+
         <%
-                    if (i < assignments.size() - 1) {
+
+                    if (
+                        i < assignments.size() - 1
+                    ) {
+
         %>
+
         ,
+
         <%
+
                     }
+
                 }
+
             }
+
         %>
 
     ];
+
 
 
     /* =========================================================
@@ -1562,40 +1574,59 @@
     let currentDate = new Date();
 
 
+
     /* =========================================================
        RENDER CALENDAR
     ========================================================= */
 
     function renderCalendar() {
 
+
         const year =
             currentDate.getFullYear();
+
 
         const month =
             currentDate.getMonth();
 
 
+
         const monthNames = [
 
             "January",
+
             "February",
+
             "March",
+
             "April",
+
             "May",
+
             "June",
+
             "July",
+
             "August",
+
             "September",
+
             "October",
+
             "November",
+
             "December"
 
         ];
 
 
+
         document.getElementById("monthTitle")
             .textContent =
-                monthNames[month] + " " + year;
+                monthNames[month] +
+                " " +
+                year;
+
 
 
         const firstDay =
@@ -1606,12 +1637,14 @@
             ).getDay();
 
 
+
         const daysInMonth =
             new Date(
                 year,
                 month + 1,
                 0
             ).getDate();
+
 
 
         const previousMonthDays =
@@ -1622,13 +1655,16 @@
             ).getDate();
 
 
+
         const grid =
             document.getElementById(
                 "calendarGrid"
             );
 
 
+
         grid.innerHTML = "";
+
 
 
         /*
@@ -1641,8 +1677,10 @@
             i--
         ) {
 
+
             const day =
                 previousMonthDays - i;
+
 
             createDay(
                 grid,
@@ -1651,7 +1689,9 @@
                 year,
                 month - 1
             );
+
         }
+
 
 
         /*
@@ -1664,6 +1704,7 @@
             day++
         ) {
 
+
             createDay(
                 grid,
                 day,
@@ -1671,7 +1712,9 @@
                 year,
                 month
             );
+
         }
+
 
 
         /*
@@ -1681,8 +1724,10 @@
         const totalCells =
             grid.children.length;
 
+
         const remaining =
             42 - totalCells;
+
 
 
         for (
@@ -1691,6 +1736,7 @@
             day++
         ) {
 
+
             createDay(
                 grid,
                 day,
@@ -1698,9 +1744,11 @@
                 year,
                 month + 1
             );
+
         }
 
     }
+
 
 
     /* =========================================================
@@ -1715,12 +1763,15 @@
         month
     ) {
 
+
         const cell =
             document.createElement("div");
 
 
+
         cell.className =
             "calendar-day";
+
 
 
         if (otherMonth) {
@@ -1728,22 +1779,28 @@
             cell.classList.add(
                 "other-month"
             );
+
         }
+
 
 
         const number =
             document.createElement("div");
 
 
+
         number.className =
             "day-number";
+
 
 
         number.textContent =
             day;
 
 
+
         cell.appendChild(number);
+
 
 
         /*
@@ -1752,6 +1809,7 @@
 
         const today =
             new Date();
+
 
 
         if (
@@ -1767,7 +1825,9 @@
         ) {
 
             cell.classList.add("today");
+
         }
+
 
 
         /*
@@ -1782,18 +1842,24 @@
             );
 
 
+
         assignments.forEach(
             function(assignment) {
 
+
                 if (!assignment.deadline) {
+
                     return;
+
                 }
+
 
 
                 const deadline =
                     new Date(
                         assignment.deadline
                     );
+
 
 
                 if (
@@ -1813,6 +1879,7 @@
 
                 ) {
 
+
                     const event =
                         document.createElement(
                             "div"
@@ -1821,6 +1888,7 @@
 
                     event.className =
                         "calendar-event";
+
 
 
                     const title =
@@ -1837,6 +1905,7 @@
                         assignment.title;
 
 
+
                     const subject =
                         document.createElement(
                             "div"
@@ -1851,21 +1920,105 @@
                         assignment.subject;
 
 
+
                     event.appendChild(title);
 
                     event.appendChild(subject);
 
 
+
+                    /*
+                     * =================================================
+                     * CLICK ASSIGNMENT
+                     *
+                     * Opens:
+                     *
+                     * /student/assignments/view?id=ASSIGNMENT_ID
+                     * =================================================
+                     */
+
+                    event.addEventListener(
+                        "click",
+                        function () {
+
+                            window.location.href =
+                                "<%= contextPath %>"
+                                + "/student/assignments/view?id="
+                                + encodeURIComponent(
+                                    assignment.id
+                                );
+
+                        }
+                    );
+
+
+
+                    /*
+                     * Accessibility
+                     */
+
+                    event.setAttribute(
+                        "role",
+                        "button"
+                    );
+
+
+                    event.setAttribute(
+                        "tabindex",
+                        "0"
+                    );
+
+
+                    event.setAttribute(
+                        "title",
+                        "Open assignment: "
+                        + assignment.title
+                    );
+
+
+
+                    /*
+                     * Allow Enter key to open assignment
+                     */
+
+                    event.addEventListener(
+                        "keydown",
+                        function (eventObject) {
+
+                            if (
+                                eventObject.key === "Enter" ||
+                                eventObject.key === " "
+                            ) {
+
+                                eventObject.preventDefault();
+
+                                window.location.href =
+                                    "<%= contextPath %>"
+                                    + "/student/assignments/view?id="
+                                    + encodeURIComponent(
+                                        assignment.id
+                                    );
+
+                            }
+
+                        }
+                    );
+
+
+
                     cell.appendChild(event);
+
                 }
 
             }
         );
 
 
+
         grid.appendChild(cell);
 
     }
+
 
 
     /* =========================================================
@@ -1879,7 +2032,9 @@
         );
 
         renderCalendar();
+
     }
+
 
 
     /* =========================================================
@@ -1893,7 +2048,9 @@
         );
 
         renderCalendar();
+
     }
+
 
 
     /* =========================================================
@@ -1906,7 +2063,9 @@
             new Date();
 
         renderCalendar();
+
     }
+
 
 
     /* =========================================================
@@ -1914,6 +2073,7 @@
     ========================================================= */
 
     renderCalendar();
+
 
 </script>
 
