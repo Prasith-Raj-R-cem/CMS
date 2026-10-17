@@ -1173,7 +1173,7 @@
 
             <!-- NOTIFICATIONS -->
 
-            <a href="#"
+            <!-- <a href="#"
                class="nav-item">
 
                 <svg
@@ -1194,7 +1194,7 @@
                     Notifications
                 </span>
 
-            </a>
+            </a> -->
 
 
         </nav>
@@ -1266,7 +1266,7 @@
             <div class="topbar-user">
 
 
-                <button class="notification-button">
+                <!-- <button class="notification-button">
 
                     <svg
                         viewBox="0 0 24 24"
@@ -1282,7 +1282,7 @@
 
                     </svg>
 
-                </button>
+                </button> -->
 
 
 

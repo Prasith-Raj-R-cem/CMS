@@ -1360,7 +1360,7 @@ String initials =
 
             <!-- Notifications -->
 
-            <a href="#"
+            <!-- <a href="#"
                class="nav-item">
 
                 <svg
@@ -1381,7 +1381,7 @@ String initials =
                     Notifications
                 </span>
 
-            </a>
+            </a> -->
 
 
         </nav>
@@ -1441,10 +1441,6 @@ String initials =
                     Dashboard
                 </h1>
 
-                <p>
-                    Overview of your academic activities
-                </p>
-
             </div>
 
 
@@ -1453,7 +1449,7 @@ String initials =
 
                 <!-- Notification -->
 
-                <button class="notification-button">
+                <!-- <button class="notification-button">
 
                     <svg
                         viewBox="0 0 24 24"
@@ -1469,7 +1465,7 @@ String initials =
 
                     </svg>
 
-                </button>
+                </button> -->
 
 
                 <!-- Avatar -->
@@ -1519,13 +1515,6 @@ String initials =
 
 
                 <div class="welcome-content">
-
-                    <div class="welcome-small">
-
-                        Welcome back
-
-                    </div>
-
 
                     <h2>
 
